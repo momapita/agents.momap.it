@@ -1,7 +1,11 @@
 <template>
   <RouterView />
+  <BottomNavigation />
 </template>
 
 <script setup>
-  console.log("App.vue")
+
+  // components imports
+  import BottomNavigation from '@/components/navigations/BottomNavigation.vue';
+
 </script>

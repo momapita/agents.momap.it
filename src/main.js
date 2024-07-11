@@ -12,6 +12,11 @@ import { themePreset } from '@/theme';
 // Import Styles And Fonts
 import './style.css';
 import '@fontsource-variable/inter';
+import "@fontsource-variable/material-symbols-outlined";
+
+// import dei servizi di primeVue
+import ToastService from 'primevue/toastservice';
+import Tooltip from 'primevue/tooltip';
 
 // Create App
 const app = createApp(App);
@@ -22,7 +27,7 @@ app.use(createPinia());
 // Use Router
 app.use(router);
 
-// Use primevue
+// Use primevue theme
 app.use(PrimeVue, {
     theme: {
         preset: themePreset,
@@ -31,6 +36,10 @@ app.use(PrimeVue, {
         }
     }
 });
+
+// Use primevue Services
+app.use(ToastService);
+app.directive('tooltip', Tooltip);
 
 
 // Mount App

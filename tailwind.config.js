@@ -66,9 +66,13 @@ export default {
     }
   },
   plugins: [
+
+    // definisco l'icona della ricerca
     require('tailwindcss/plugin')(({ addVariant }) => {
       addVariant('search-cancel', '&::-webkit-search-cancel-button');
     }),
+
+    // definisco un plugin per il text-shadow
     plugin(function({ matchUtilities, theme }) {
       matchUtilities(
         {
@@ -82,6 +86,33 @@ export default {
         },
         { values: { ...theme('textShadow'), ...theme('translate') } }
       )
-    })
+    }),
+
+    // definisco un plugin per le icone di google
+    plugin(function({ addUtilities, e }) {
+      
+      // Gestione del fill
+      const fillUtilities = {
+        '.material-symbols-fill-0': {
+          'font-variation-settings': "'FILL' 0 !important",
+        },
+        '.material-symbols-fill-1': {
+          'font-variation-settings': "'FILL' 1 !important",
+        },
+      };
+
+      // Gestione del font weight
+      const fontWeightUtilities = {};
+      for (let i = 100; i <= 700; i += 100) {
+        fontWeightUtilities[`.material-symbols-font-${i}`] = {
+          'font-variation-settings': `'wght' ${i} !important`,
+        };
+      }
+
+      // Aggiunta delle utility
+      addUtilities({  ...fillUtilities, ...fontWeightUtilities });
+
+    }),
+
   ]
 }
