@@ -1,8 +1,8 @@
 <template>
-  <div class="flex flex-col min-h-screen">
-    <ToolBar />
-    <div class="grow py-4 px-2 lg:px-6">
-      <RouterView />
+  <div class="flex flex-col h-screen">
+    <ToolBar/>
+    <div class="grow py-4 px-2 lg:px-6 overflow-y-auto overflow-x-hidden">
+      <RouterView/>
     </div>
     <BottomNavigation v-if="isLoggedIn" class="lg:!hidden" />
   </div>

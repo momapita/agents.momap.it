@@ -1,85 +1,114 @@
 import axios from 'axios';
+import axiosRetry from 'axios-retry';
 import { cacheAdapterEnhancer, throttleAdapterEnhancer } from 'axios-extensions';
 import adapter from 'axios/lib/adapters/xhr';
+//import { useAuthStore } from '@/stores/auth.js';
 
-// Setto l'url di base e l'adapter
-const api = axios.create({
-    baseURL: import.meta.env.VITE_API_URL ?? "https://apidev.momap.it/v1",
-    adapter: throttleAdapterEnhancer(cacheAdapterEnhancer(adapter, true))
-});
+class ApiService {
 
-/* Aggiungo il token jwt
-import { useAuthStore } from '@/stores/auth.js';
-api.interceptors.request.use(config => {
-    const authStore = useAuthStore();
-    const token = authStore.token;
-  
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-  
-    return config;
-});*/
+  constructor(baseURL) {
 
-// Metodo Get
-export async function getRequest(endpoint) {
-    try {
-      const response = await api.get(endpoint);
-  
-      if(response.status != 200){
-        throw new Error('La chiamata API non è riuscita o non ha successo.');
+    this.api = axios.create({
+      baseURL: baseURL ?? "https://auth-api.momap.it/v1",
+      adapter: throttleAdapterEnhancer(cacheAdapterEnhancer(adapter, true)),
+      timeout: 25000
+    });
+
+    // Configuro il retry per le richieste
+    axiosRetry(this.api, { retries: 3, retryDelay: axiosRetry.exponentialDelay });
+
+    /*// Interceptor per aggiungere il token JWT
+    this.api.interceptors.request.use(config => {
+      const authStore = useAuthStore();
+      const token = authStore.token;
+
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
       }
-  
-      // restituisco tempData
-      return response.data;
-  
-    } catch (error) {
-      throw error;
-    }
-}
 
-// Metodo Post
-export async function postRequest(endpoint, data, responseType = null) {
-    try {
-      
-        const response = await api.post(endpoint, data, responseType);
-  
-      if(response.status != 200){
-        throw new Error('La chiamata API non è riuscita o non ha successo.');
-      }
-  
-      let tempData = response.data;
-  
-      if(responseType != null){
-        return tempData;
-      }
-  
-      if(tempData.success != true){
-        throw new Error(tempData?.error ?? 'La chiamata API non è riuscita o non ha successo.');
-      }
-  
-      // restituisco tempData
-      return tempData;
-  
-    } catch (error) {
-      throw error;
-    }
-}
+      return config;
+    }, error => {
+      return Promise.reject(error);
+    });*/
 
-// Metodo postFile
-export async function postFileRequest(endpoint, data) {
-    try {
+  }
+
+  handleResponse(response) {
     
-      const response = await api.post(endpoint, data, { headers: { 'Content-Type': 'multipart/form-data'} });
-  
-      if (response.status !== 200) {
-        throw new Error('La chiamata API non è riuscita o non ha successo.');
-      }
-  
-      return response.data;
-    } catch (error) {
-      throw error;
+    if (response?.status !== 200) {
+      throw new Error('La chiamata API non è riuscita o non ha successo');
     }
+
+    if(!('data' in response) || response?.data === null) {
+      throw new Error('La chiamata API contiene nessun dato');
+    }
+
+    if(!('success' in response?.data) || response?.data?.success !== true) {
+      throw new Error('La chiamata API ha restituito esito non valido');
+    }
+
+    return response?.data;
+  }
+
+  handleError(error) {
+    if (error.response) {
+      switch (error.response.status) {
+        case 400:
+          return new Error('Richiesta non valida: ' + error.response.data.message);
+        case 401:
+          return new Error('Non autorizzato: ' + error.response.data.message);
+        case 404:
+          return new Error('Risorsa non trovata: ' + error.response.data.message);
+        case 500:
+          return new Error('Errore interno del server: ' + error.response.data.message);
+        default:
+          return new Error('Errore: ' + error.response.data.message);
+      }
+    } else if (error.request) {
+      return new Error('Errore di rete: Impossibile raggiungere il server.');
+    } else {
+      return new Error('Errore nella richiesta: ' + error.message);
+    }
+  }
+
+  async request(method, endpoint, data = null, config = {}) {
+    try {
+      const response = await this.api.request({ method, url: endpoint, data, ...config });
+      return this.handleResponse(response);
+    } catch (error) {
+      throw this.handleError(error);
+    }
+  }
+
+  async get(endpoint) {
+    return this.request('get', endpoint);
+  }
+
+  async post(endpoint, data, responseType = null) {
+    return this.request('post', endpoint, data, { responseType });
+  }
+
+  async put(endpoint, data) {
+    return this.request('put', endpoint, data);
+  }
+
+  async delete(endpoint) {
+    return this.request('delete', endpoint);
+  }
+
+  async postFile(endpoint, data) {
+    return this.request('post', endpoint, data, { headers: { 'Content-Type': 'multipart/form-data' } });
+  }
+
+  setBaseURL(newBaseURL) {
+    this.api.defaults.baseURL = newBaseURL;
+  }
+
+  setHeaders(headers) {
+    this.api.defaults.headers = { ...this.api.defaults.headers, ...headers };
+  }
 }
 
-export default api;
+const apiService = new ApiService(import.meta.env.VITE_API_URL);
+
+export default apiService;

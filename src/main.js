@@ -13,6 +13,9 @@ import FormGenerator from "@/components/form/FormGenerator.vue";
 import PrimeVue from 'primevue/config';
 import { themePreset } from '@/theme';
 
+// Import dei vari layout
+import Wrapper from '@/theme/layouts/Wrapper.vue';
+
 // Import Styles And Fonts
 import './style.css';
 import '@fontsource-variable/inter';
@@ -48,6 +51,9 @@ app.use(PrimeVue, {
         }
     }
 });
+
+// Use Wrapper Layout
+app.component('WrapperLayout', Wrapper);
 
 // Use primevue Services
 app.use(ToastService);

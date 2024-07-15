@@ -3,7 +3,7 @@ import Lara from '@primevue/themes/lara';
 
 export const themePreset = definePreset(Lara, {
     semantic: {
-        iconSize: '0.8rem',
+        iconSize: '1rem',
         primary: {
             50: '{zinc.50}',
             100: '{zinc.100}',

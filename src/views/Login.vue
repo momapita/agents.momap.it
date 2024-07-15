@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-surface-50 dark:bg-surface-800 shadow-sm rounded-md px-4 py-24 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-4">
+    <WrapperLayout>
 
         <!-- Immagine -->
         <div class="flex items-center justify-center lg:col-span-5">
@@ -16,7 +16,7 @@
             <FormGenerator :fields="formModel" @onSave="onSave" class="w-full" />
         </div>
 
-    </div>
+    </WrapperLayout>
 </template>
 
 <script setup>
