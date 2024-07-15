@@ -53,5 +53,8 @@ app.use(PrimeVue, {
 app.use(ToastService);
 app.directive('tooltip', Tooltip);
 
+// Setto globalmente la variabile della CDN
+app.provide('cdnUrl', import.meta.env.VITE_CDN_URL);
+
 // Mount App
 app.mount('#app')

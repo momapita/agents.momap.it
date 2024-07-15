@@ -1,12 +1,3 @@
-/**
- * 
- *  ESEMPIO DI UTILIZZO
- * 
- *   import DateHelper from '@/helpers/date';
-    const dateHelper1 = new DateHelper();
- * 
- */
-
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
@@ -18,8 +9,7 @@ dayjs.extend(timezone);
 class DateHelper {
 
   constructor() {
-    this.fallbackTimezone = 'UTC';
-    this.timeZone = dayjs.tz.guess() ?? fallbackTimezone;
+    this.timeZone = dayjs.tz.guess() ?? import.meta.env.VITE_FALLBACK_TIMEZONE;
   }
 
   getTimeZone() {

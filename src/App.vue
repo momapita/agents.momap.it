@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col min-h-screen">
     <ToolBar />
-    <div class="grow py-4 px-2 lg:px-4">
+    <div class="grow py-4 px-2 lg:px-6">
       <RouterView />
     </div>
     <BottomNavigation v-if="isLoggedIn" class="lg:!hidden" />

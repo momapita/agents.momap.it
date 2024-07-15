@@ -1,6 +1,6 @@
 
 <template>
-    <Toolbar class="!py-1 lg:!py-2 w-full !px-4 !rounded-none lg:!rounded-t-none lg:!rounded-b-3xl sticky top-0 mx-auto z-50 transition-all">
+    <Toolbar class="!py-1 lg:!py-2 w-full !px-6 !rounded-none sticky top-0 mx-auto z-50 transition-all">
         
         <template #start>
             <div class="flex items-center gap-2">
