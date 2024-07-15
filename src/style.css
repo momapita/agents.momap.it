@@ -1,3 +1,5 @@
+@import url('primeicons/primeicons.css');
+
 /*Importo i file di base di tailwind css*/
 @tailwind base;
 @tailwind components;
@@ -5,6 +7,26 @@
 
 body {
     font-family: 'Inter Variable', sans-serif;
+}
+
+@layer utilities {
+    
+    ::selection {
+        @apply bg-momap1/40 text-white; 
+    }
+    
+    ::-webkit-scrollbar {
+        @apply w-1.5 h-1.5 rounded-lg;
+    }
+
+    ::-webkit-scrollbar-track {
+        @apply bg-transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        @apply bg-momap1/40 rounded-lg;
+    }
+
 }
 
 /* Importo i font material symbols */

@@ -49,6 +49,5 @@ app.use(PrimeVue, {
 app.use(ToastService);
 app.directive('tooltip', Tooltip);
 
-
 // Mount App
 app.mount('#app')

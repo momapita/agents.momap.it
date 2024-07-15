@@ -10,6 +10,10 @@ import mkcert from 'vite-plugin-mkcert';
 // import version
 import version from 'vite-plugin-package-version';
 
+// import components and primeVueResolver
+import Components from 'unplugin-vue-components/vite';
+import { PrimeVueResolver } from '@primevue/auto-import-resolver';
+
 export default defineConfig({
   server: {
     https: true,
@@ -19,7 +23,10 @@ export default defineConfig({
   plugins: [
     vue(),
     version(),
-    mkcert()
+    mkcert(),
+    Components({
+      resolvers: [ PrimeVueResolver() ]
+    })
   ],
   resolve: {
     alias: {

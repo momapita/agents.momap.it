@@ -35,6 +35,36 @@ class DateHelper {
     return utcConversion ? dayjs.utc(date).tz(this.timeZone).format(format) : dayjs(date).tz(this.timeZone).format(format);
   }
 
+  formatDateValue(value) {
+    try {
+      
+      // controllo se la data è 0000-00-00 00:00:00
+      if (value === '0000-00-00 00:00:00') {
+        throw new Error('Data non valida0');
+      }
+
+      // controllo se value è uguale a null
+      if (value === null) {
+        throw new Error('Data non valida1');
+      }
+
+      // controllo se value è un oggetto
+      if (typeof value != 'object' && typeof value != 'string') {
+        throw new Error('Data non valida2');
+      }
+
+      // controllo se value è una data valida
+      if (!dayjs(value).isValid()) {
+        throw new Error('Data non valida3');
+      }
+
+      return dayjs(value).format('YYYY-MM-DD HH:mm:ss');
+
+    } catch (error) {
+      return value;
+    }  
+  }
+
   getDateString(date) {
     return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
   }
