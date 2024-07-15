@@ -3,6 +3,7 @@ import Lara from '@primevue/themes/lara';
 
 export const themePreset = definePreset(Lara, {
     semantic: {
+        iconSize: '0.8rem',
         primary: {
             50: '{zinc.50}',
             100: '{zinc.100}',
@@ -29,7 +30,7 @@ export const themePreset = definePreset(Lara, {
                     focusBackground: '{zinc.700}',
                     color: '#ffffff',
                     focusColor: '#ffffff'
-                }
+                },
             },
             dark: {
                 primary: {
@@ -43,8 +44,18 @@ export const themePreset = definePreset(Lara, {
                     focusBackground: 'rgba(250, 250, 250, .24)',
                     color: 'rgba(255,255,255,.87)',
                     focusColor: 'rgba(255,255,255,.87)'
+                },
+                message: {
+                    contentPadding: '0.25rem 0.50rem'
                 }
             }
+        },
+    },
+    components: {
+        message: {
+            content: {
+                padding: "0.35rem 0.75rem"
+            },
         }
     }
 });

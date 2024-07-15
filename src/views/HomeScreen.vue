@@ -20,8 +20,12 @@
             label: "du_id",
             placeholder: "du_id",
             model: null,
-            type: "text",
-            notShow: true
+            type: "toggle",
+            bind: {
+                onLabel: "Attivo",
+                offLabel: "Disattivo",
+            },
+            notShow: false
         },
         du_object_id: {
             key: "du_object_id",
@@ -35,6 +39,7 @@
                 optionLabel: "go_name",
                 optionValue: "go_imei",
                 filterFields: ['go_name', 'go_imei'],
+                display: "chip",
                 options: [
                     { go_name: 'test name', go_imei: 'test' },
                     { go_name: 'test name 2', go_imei: 'test 2' },

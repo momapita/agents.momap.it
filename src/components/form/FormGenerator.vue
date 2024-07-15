@@ -8,8 +8,15 @@
 
                     <!-- Label and Error Message -->
                     <label :for="field?.key" class="flex items-center gap-2 flex-wrap pl-2">
+                        
+                        <!-- Field information -->
                         <span>{{ field?.label }}</span>
-                        <ErrorMessage :name="field?.key" class="errorMessage" />
+
+                        <!-- Error message -->
+                        <ErrorMessage as="div" :name="field?.key" v-slot="{ message }">
+                            <Message severity="error" class="text-xs">{{ message }}</Message>
+                        </ErrorMessage>
+
                     </label>
 
                     <!-- Renderizzo il field con il template per le varie tipologie -->
@@ -17,37 +24,37 @@
                         
                         <!-- Caso in cui è un Dropdown -->
                         <template v-if="field?.type === 'dropdown'">
-                            <Select v-model="field.model" v-bind="field.bind" :placeholder="field?.placeholder" />
+                            <Select v-model="field.model" v-bind="field.bind" :placeholder="field?.placeholder" class="w-full" />
                         </template>
 
                         <!-- Caso in cui è una multiselect -->
                         <template v-else-if="field?.type === 'multiselect'">
-                            <MultiSelect v-model="field.model" v-bind="field.bind" :placeholder="field?.placeholder" />
+                            <MultiSelect v-model="field.model" v-bind="field.bind" :placeholder="field?.placeholder" class="w-full" />
                         </template>
 
                         <!-- Caso in cui è un Calendar -->
                         <template v-else-if="field?.type === 'calendar'">
-                            <Calendar v-model="field.model" v-bind="field.bind || {}" :placeholder="field?.placeholder" />
+                            <Calendar v-model="field.model" v-bind="field.bind || {}" :placeholder="field?.placeholder" class="w-full" />
                         </template>
 
                         <!-- Caso in cui è un numero -->
                         <template v-else-if="field?.type === 'number'">
-                            <InputNumber v-model="field.model" v-bind="field.bind || {}" :placeholder="field?.placeholder" />
+                            <InputNumber v-model="field.model" v-bind="field.bind || {}" :placeholder="field?.placeholder" class="w-full" />
                         </template>
 
                         <!-- Caso in cui è un toggle -->
                         <template v-else-if="field?.type === 'toggle'">
-                            <ToggleButton v-model="field.model" v-bind="field.bind || {}" />
+                            <ToggleButton v-model="field.model" v-bind="field.bind || {}" class="w-full" />
                         </template>
 
                         <!-- Caso in cui è un textarea -->
                         <template v-else-if="field?.type === 'textarea'">
-                            <Textarea v-model="field.model" v-bind="field.bind || {}" :placeholder="field?.placeholder" />
+                            <Textarea v-model="field.model" v-bind="field.bind || {}" :placeholder="field?.placeholder" class="w-full" />
                         </template>
 
                         <!-- Caso di default (input txt) -->
                         <template v-else>
-                            <InputText v-model="field.model" v-bind="field.bind || {}" :placeholder="field?.placeholder" />
+                            <InputText v-model="field.model" v-bind="field.bind || {}" :placeholder="field?.placeholder" class="w-full" />
                         </template>
                         
                     </Field>

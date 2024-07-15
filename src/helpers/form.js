@@ -231,7 +231,7 @@ export const formatFormModelValues = (model) => {
   
       // Funzione per formattare i valori di tipo calendar
       const formatDateValue = (value) => {
-        return checkDate(value) ? new Date(value) : null;
+        return dateServices.checkDate(value) ? new Date(value) : null;
       };
   
       // Itero gli elementi per formattare i valori
@@ -263,6 +263,7 @@ export const formatFormModelValues = (model) => {
       return formattedModel;
   
     } catch (error) {
+      console.error('Error in formatFormModelValues', error);
       return null;
     }
 }
