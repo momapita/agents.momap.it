@@ -54,7 +54,7 @@ export const themePreset = definePreset(Lara, {
     components: {
         message: {
             content: {
-                padding: "0.35rem 0.75rem"
+                padding: "0.25rem 0.50rem"
             },
         }
     }

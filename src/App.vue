@@ -21,7 +21,7 @@
   import BottomNavigation from '@/components/navigations/BottomNavigation.vue';
 
   // dichiaro una variabile statica per i test di login
-  const isLoggedIn = ref(false);
+  const isLoggedIn = ref(true);
 
   // hoock di caricamento
   onMounted(() => {

@@ -1,5 +1,5 @@
 <template>
-    <div class="sticky z-50 w-full py-2 lg:max-w-2xl bg-white border rounded-t-full bottom-0 dark:border-totalGray dark:bg-totalGray">
+    <div class="sticky z-50 w-full py-2 lg:max-w-2xl bg-surface-50 border rounded-t-full bottom-0 dark:border-surface-800 dark:bg-surface-800">
         <div class="grid h-full lg:max-w-2xl grid-cols-5 mx-auto items-center justify-center">
 
             <!-- Renderizzo i vari elementi -->
