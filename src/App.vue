@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col min-h-screen">
-    <ToolBar v-if="isLoggedIn" />
+    <ToolBar />
     <div class="grow py-4 px-2 lg:px-4">
       <RouterView />
     </div>
@@ -21,7 +21,7 @@
   import BottomNavigation from '@/components/navigations/BottomNavigation.vue';
 
   // dichiaro una variabile statica per i test di login
-  const isLoggedIn = ref(true);
+  const isLoggedIn = ref(false);
 
   // hoock di caricamento
   onMounted(() => {

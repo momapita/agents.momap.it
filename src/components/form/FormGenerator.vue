@@ -20,7 +20,7 @@
                     </label>
 
                     <!-- Renderizzo il field con il template per le varie tipologie -->
-                    <Field v-model="field.model" :name="field?.key" :placeholder="field?.placeholder" :rules="field?.rules || null">
+                    <Field v-model="field.model" :name="field?.key" :placeholder="field?.placeholder" :rules="field?.rules || null" autocomplete="on">
                         
                         <!-- Caso in cui è un Dropdown -->
                         <template v-if="field?.type === 'dropdown'">
@@ -52,6 +52,11 @@
                             <Textarea v-model="field.model" v-bind="field.bind || {}" :placeholder="field?.placeholder" class="w-full" />
                         </template>
 
+                        <!-- Caso in cui è una password -->
+                        <template v-else-if="field?.type === 'password'">
+                            <Password v-model="field.model" v-bind="field.bind || {}" :placeholder="field?.placeholder" class="w-full" />
+                        </template>
+
                         <!-- Caso di default (input txt) -->
                         <template v-else>
                             <InputText v-model="field.model" v-bind="field.bind || {}" :placeholder="field?.placeholder" class="w-full" />
@@ -65,7 +70,7 @@
 
         <!-- Sezione dei bottoni -->
         <div class="flex justify-end gap-2 mt-8">
-            <Button icon="pi pi-check" aria-label="Save" :label="bntSubmitObj?.label || 'Salva'" type="submit" />
+            <Button aria-label="Save" :label="bntSubmitObj?.label || 'Salva'" type="submit" class="w-full"/>
         </div>
 
     </Form>
@@ -79,6 +84,7 @@
     // Services imports
     import { formatFormModelValues } from "@/helpers/form.js";
     import DateHelper from '@/helpers/date';
+import InputText from 'primevue/inputtext';
 
     // Creo l'istanza del servizio data
     const dateServices = new DateHelper();

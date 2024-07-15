@@ -44,3 +44,8 @@ body {
     direction: ltr;
     font-variation-settings: 'FILL' 0, 'wght' 500, 'GRAD' 0, 'opsz' 48;
 }
+
+/*Force wfull input primevue*/
+.p-inputtext {
+    width: 100% !important;
+}

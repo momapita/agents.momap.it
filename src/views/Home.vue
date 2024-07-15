@@ -7,11 +7,8 @@
 <script setup>
 
     // base imports
-    import { ref, computed } from 'vue';
+    import { ref } from 'vue';
     import * as yup from "yup";
-
-    // Form imports
-    import FormGenerator from "@/components/form/FormGenerator.vue";
 
     // definisco il modello per il form
     const formModel = ref({
