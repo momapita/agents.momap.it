@@ -5,6 +5,9 @@ import App from './App.vue';
 // import per pinia e il persist date
 import { createPinia } from 'pinia';
 
+// import per vee validate
+import { Field, Form, ErrorMessage } from 'vee-validate';
+
 // Import PrimeVue and theme
 import PrimeVue from 'primevue/config';
 import { themePreset } from '@/theme';
@@ -26,6 +29,11 @@ app.use(createPinia());
 
 // Use Router
 app.use(router);
+
+// Use veeValidate
+app.component('Field', Field);
+app.component('Form', Form);
+app.component('ErrorMessage', ErrorMessage);
 
 // Use primevue theme
 app.use(PrimeVue, {

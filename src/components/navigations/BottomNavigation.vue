@@ -1,5 +1,5 @@
 <template>
-    <div class="fixed z-50 w-[95%] h-14 lg:h-16 lg:max-w-2xl -translate-x-1/2 bg-white border rounded-t-3xl bottom-0 left-1/2 dark:border-totalGray dark:bg-totalGray">
+    <div class="sticky z-50 w-full py-2 lg:max-w-2xl bg-white border rounded-t-full bottom-0 dark:border-totalGray dark:bg-totalGray">
         <div class="grid h-full lg:max-w-2xl grid-cols-5 mx-auto items-center justify-center">
 
             <!-- Renderizzo i vari elementi -->
@@ -12,9 +12,6 @@
                 <span class="material-symbols-outlined material-symbols-font-300 !text-2xl" :class="item?.class"> {{ item.icon }} </span>
             </div>
 
-            <!-- Bottone tema -->
-            <ToggleTheme />
-
         </div>
     </div>
 </template>
@@ -23,10 +20,7 @@
 
     // based imports
     import { ref } from 'vue';
-
-    // components imports
-    import ToggleTheme from '@/components/reusable/ToggleTheme.vue';
-
+    
     // dichiaro un oggetto per la lista della navigazione
     const navigationList = ref([
         {
@@ -41,6 +35,10 @@
             title: "Aggiungi Ordine",
             icon: "add",
             class: "bg-green-500 text-white rounded-full h-10 w-10 !flex items-center justify-center"
+        },
+        {
+            title: "Impostazioni Account",
+            icon: "manage_accounts"
         },
         {
             title: "Impostazioni Account",
