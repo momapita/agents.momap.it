@@ -69,7 +69,7 @@ class ApiService {
     } else {
       return new Error('Errore nella richiesta: ' + error.message);
     }
-  }
+  } 
 
   async request(method, endpoint, data = null, config = {}) {
     try {
