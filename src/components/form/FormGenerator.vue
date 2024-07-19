@@ -70,7 +70,13 @@
 
         <!-- Sezione dei bottoni -->
         <div class="flex justify-end gap-2 mt-8">
-            <Button aria-label="Save" :label="bntSubmitObj?.label || 'Salva'" type="submit" class="w-full"/>
+            <Button
+                :aria-label="btnSave?.label"
+                :label="btnSave?.label"
+                :icon="btnSave?.icon"
+                type="submit"
+                class="w-full"
+            />
         </div>
 
     </Form>
@@ -84,7 +90,6 @@
     // Services imports
     import { formatFormModelValues } from "@/helpers/form.js";
     import DateHelper from '@/helpers/date';
-import InputText from 'primevue/inputtext';
 
     // Creo l'istanza del servizio data
     const dateServices = new DateHelper();
@@ -99,14 +104,22 @@ import InputText from 'primevue/inputtext';
             type: String,
             default: "default",
             validator: (value) => {
-                const arrValues = ["default", "grid"]; 
-                return arrValues.includes(value);
+                return ["default", "grid"].includes(value);
             },
             required: false
         },
-        bntSubmitObj: {
+        tKey: {
+            type: String,
+            required: false,
+            default: null
+        },
+        btnSave: {
             type: Object,
-            required: false
+            required: false,
+            default: {
+                icon: null,
+                label: 'salva'
+            }
         }
     });
 

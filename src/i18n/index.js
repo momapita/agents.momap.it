@@ -2,12 +2,22 @@
 import { createI18n } from "vue-i18n";
 
 // rules imports
-import pluralRules from "./rules/pluralization";
 import numberFormats from "./rules/numbers.js";
 import datetimeFormats from "./rules/datetime.js";
 
 // default import languages
-import it from '@/i18n/locales/it.json';
+import it from '@/i18n/locales/it/index.js';
+
+/******
+ *  Utilizzo libreria vue-i18n
+ *   
+ *   $d --> Formattazione per la data
+ * 
+ *   $t --> Traduzioni testuali
+ * 
+ *  $n --> Formattazione numerica
+ * 
+ * ******/
 
 export default createI18n({
   locale: import.meta.env.VITE_DEFAULT_LOCALE,
@@ -16,7 +26,6 @@ export default createI18n({
   globalInjection: true,
   messages: { it },
   runtimeOnly: true,
-  pluralRules,
   numberFormats,
   datetimeFormats
 });

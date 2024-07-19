@@ -1,6 +1,8 @@
 <template>
     <div>
-        {{ $t('welcome', { user: 'Valentino' }) }}
+        {{ $t('forms.email.placeholder') }}
+
+        <p>{{ $n(10000, 'currencyFormat') }}</p>
     </div>
 </template>
 
