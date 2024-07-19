@@ -150,5 +150,16 @@ export default {
     updateAvailable: "Aggiornamento Disponibile",
     version: "Versione",
     releaseNotes: "Note di Rilascio",
-    changelog: "Registro Modifiche"
+    changelog: "Registro Modifiche",
+    user: "Utente",
+    users: "Utenti",
+    login: "Login",
+    logout: "Logout",
+    profile: "Profilo",
+    changePassword: "Cambia Password",
+    password: "Password",
+    currentPassword: "Password Corrente",
+    newPassword: "Nuova Password",
+    confirmPassword: "Conferma Password",
+    forgotPassword: "Hai dimenticato la password?",
 }

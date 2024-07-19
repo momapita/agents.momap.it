@@ -128,5 +128,6 @@ export default {
         placeholder: "",
         label: "Add",
         validate: ""
-    }
+    },
+    required: "This field is required",
 };

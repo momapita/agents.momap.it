@@ -2,18 +2,20 @@ import { createRouter, createWebHistory, RouterView } from 'vue-router';
 import Tr from "@/i18n/translation";
 import { authMiddleware } from './middleware';
 
+import LoginView from '@/views/Login.vue';
+
 const router = createRouter({
-  history: createWebHistory(import.meta.env.VITE_BASE_URL),
+  history: createWebHistory(import.meta.env.VITE_BASE_URL || '/'),
   routes: [
     {
       path: "/:locale?",
       component: RouterView,
-      beforeEnter: Tr.routeMiddleware,
+      beforeEnter: Tr.authMiddleware,
       children: [
         {
           path: 'login',
           name: 'login',
-          component: () => import('@/views/Login.vue')
+          component: LoginView,
         },
         {
           path: '',
@@ -25,8 +27,7 @@ const router = createRouter({
     {
       path: '/:pathMatch(.*)*',
       name: 'NotFound',
-      component: () =>  import('@/views/Home.vue'),
-      meta: { requiresAuth: false }
+      component: () =>  import('@/views/Home.vue')
     }
   ]
 });

@@ -13,7 +13,13 @@
 
         <!-- Form -->
         <div class="lg:col-span-7 flex items-center justify-center">
-            <FormGenerator :fields="formModel" @onSave="onSave" class="w-full" />
+            <FormGenerator
+                :fields="formModel"
+                :tKey="'forms'"
+                @onSave="onSave"
+                class="w-full"
+                :btnSave="{ label: 'general.login' }"
+            />
         </div>
 
     </WrapperLayout>
@@ -24,28 +30,33 @@
     // base imports
     import { ref } from 'vue';
     import * as yup from "yup";
+    import { useI18n } from "vue-i18n";
+
+    // definisco la lingua
+    const { t } = useI18n();
 
     // definisco il modello per il form
     const formModel = ref({
         email: {
             key: "email",
-            label: "Email",
-            placeholder: "Inserisci l'email del tuo account",
+            label: ['forms.email.label', 'general.user' ],
+            placeholder: "email.placeholder",
             model: null,
             type: "text",
-            rules: yup.string().email(()=> 'Email non valida').required(() => 'Campo obbligatorio'),
+            rules: yup.string().email(()=> t('forms.email.validate')).required(() => t('forms.required')),
+            localTranslate: true
         },
         password: {
             key: "password",
-            label: "Password",
-            placeholder: "Inserisci la password del tuo account",
+            label: "password.label",
+            placeholder: "password.placeholder",
             model: null,
             type: "password",
             bind: {
                 toggleMask: true,
                 feedback: false
             },
-            rules: yup.string().required(() => 'Campo obbligatorio').min(6, () => 'La password deve avere almeno 6 caratteri'),
+            rules: yup.string().required(() => t('forms.required')).min(6, () => t('forms.password.validate')),
         }
     });
 

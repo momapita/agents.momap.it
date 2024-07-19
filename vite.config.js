@@ -18,7 +18,7 @@ export default defineConfig({
   server: {
     https: true,
     host: true,
-    port: 446,
+    port: 8080,
   },
   plugins: [
     vue(),
@@ -40,5 +40,8 @@ export default defineConfig({
   },
   transpileDependencies: true,
   lintonsave: false,
-  publicpath: ''
+  publicpath: '',
+  define: {
+    'process.env': process.env
+  }
 })

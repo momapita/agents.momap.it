@@ -34,11 +34,11 @@ const app = createApp(App);
 // Use Pinia
 app.use(createPinia());
 
-// Use Router
-app.use(router);
-
 // Gestione del multilingua
 app.use(i18n);
+
+// Use Router
+app.use(router);
 
 // Use veeValidate
 app.component('Field', Field);

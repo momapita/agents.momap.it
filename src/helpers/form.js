@@ -35,7 +35,8 @@ export const resetFormModel = (model, showElements = [], notShowElements = []) =
           send: field?.send || null,
           rules: field?.rules,
           bind: field?.bind,
-          autocompleteReference: field?.autocompleteReference || null
+          autocompleteReference: field?.autocompleteReference || null,
+          localTranslate: field?.localTranslate || false
         };
         return acc;
       }, {});
@@ -82,7 +83,8 @@ export const fillFormModel = (model, data, notShowElements = [], showElements = 
           send: field?.send || null,
           rules: field?.rules,
           bind: bind,
-          autocompleteReference: field?.autocompleteReference || null
+          autocompleteReference: field?.autocompleteReference || null,
+          localTranslate: field?.localTranslate || false
         };
         return acc;
       }, {});

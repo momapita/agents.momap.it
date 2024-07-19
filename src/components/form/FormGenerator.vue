@@ -10,7 +10,15 @@
                     <label :for="field?.key" class="flex items-center gap-2 flex-wrap pl-2">
                         
                         <!-- Field information -->
-                        <span>{{ field?.label }}</span>
+                        <div v-if="field?.label && Array.isArray(field?.label) && field?.label.length > 0" class="space-x-1">
+                            <span v-for="(singleField, index) in field?.label" :key="index">
+                                {{ $t(field?.localTranslate ? singleField : `${tKey ? `${tKey}.` : ''}${singleField}`) }}
+                            </span>
+                        </div>
+
+                        <div v-else-if="field?.label && !Array.isArray(field?.label) && field?.label !== '' && field?.label !== null">
+                            {{ $t(field?.localTranslate ? field : `${tKey ? `${tKey}.` : ''}${field?.label}`) }}
+                        </div>
 
                         <!-- Error message -->
                         <ErrorMessage as="div" :name="field?.key" v-slot="{ message }">
@@ -20,26 +28,26 @@
                     </label>
 
                     <!-- Renderizzo il field con il template per le varie tipologie -->
-                    <Field v-model="field.model" :name="field?.key" :placeholder="field?.placeholder" :rules="field?.rules || null" autocomplete="on">
+                    <Field v-model="field.model" :name="field?.key" :placeholder="$t(`${tKey}.${field?.placeholder}`)" :rules="field?.rules || null" autocomplete="on">
                         
                         <!-- Caso in cui è un Dropdown -->
                         <template v-if="field?.type === 'dropdown'">
-                            <Select v-model="field.model" v-bind="field.bind" :placeholder="field?.placeholder" class="w-full" />
+                            <Select v-model="field.model" v-bind="field.bind" :placeholder="$t(`${tKey}.${field?.placeholder}`)" class="w-full" />
                         </template>
 
                         <!-- Caso in cui è una multiselect -->
                         <template v-else-if="field?.type === 'multiselect'">
-                            <MultiSelect v-model="field.model" v-bind="field.bind" :placeholder="field?.placeholder" class="w-full" />
+                            <MultiSelect v-model="field.model" v-bind="field.bind" :placeholder="$t(`${tKey}.${field?.placeholder}`)" class="w-full" />
                         </template>
 
                         <!-- Caso in cui è un Calendar -->
                         <template v-else-if="field?.type === 'calendar'">
-                            <Calendar v-model="field.model" v-bind="field.bind || {}" :placeholder="field?.placeholder" class="w-full" />
+                            <Calendar v-model="field.model" v-bind="field.bind || {}" :placeholder="$t(`${tKey}.${field?.placeholder}`)" class="w-full" />
                         </template>
 
                         <!-- Caso in cui è un numero -->
                         <template v-else-if="field?.type === 'number'">
-                            <InputNumber v-model="field.model" v-bind="field.bind || {}" :placeholder="field?.placeholder" class="w-full" />
+                            <InputNumber v-model="field.model" v-bind="field.bind || {}" :placeholder="$t(`${tKey}.${field?.placeholder}`)" class="w-full" />
                         </template>
 
                         <!-- Caso in cui è un toggle -->
@@ -49,17 +57,17 @@
 
                         <!-- Caso in cui è un textarea -->
                         <template v-else-if="field?.type === 'textarea'">
-                            <Textarea v-model="field.model" v-bind="field.bind || {}" :placeholder="field?.placeholder" class="w-full" />
+                            <Textarea v-model="field.model" v-bind="field.bind || {}" :placeholder="$t(`${tKey}.${field?.placeholder}`)" class="w-full" />
                         </template>
 
                         <!-- Caso in cui è una password -->
                         <template v-else-if="field?.type === 'password'">
-                            <Password v-model="field.model" v-bind="field.bind || {}" :placeholder="field?.placeholder" class="w-full" />
+                            <Password v-model="field.model" v-bind="field.bind || {}" :placeholder="$t(`${tKey}.${field?.placeholder}`)" class="w-full" />
                         </template>
 
                         <!-- Caso di default (input txt) -->
                         <template v-else>
-                            <InputText v-model="field.model" v-bind="field.bind || {}" :placeholder="field?.placeholder" class="w-full" />
+                            <InputText v-model="field.model" v-bind="field.bind || {}" :placeholder="$t(`${tKey}.${field?.placeholder}`)" class="w-full" />
                         </template>
                         
                     </Field>
@@ -71,8 +79,8 @@
         <!-- Sezione dei bottoni -->
         <div class="flex justify-end gap-2 mt-8">
             <Button
-                :aria-label="btnSave?.label"
-                :label="btnSave?.label"
+                :aria-label="$t(btnSave?.label)"
+                :label="$t(btnSave?.label)"
                 :icon="btnSave?.icon"
                 type="submit"
                 class="w-full"
@@ -118,7 +126,7 @@
             required: false,
             default: {
                 icon: null,
-                label: 'salva'
+                label: 'general.save'
             }
         }
     });
