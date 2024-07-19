@@ -1,5 +1,5 @@
 <template>
-    <div class="h-12 w-12 flex items-center justify-center rounded-lg p-2 transition-colors duration-200 hover:bg-yellow-100 dark:hover:bg-gray-100 cursor-pointer" @click="toggleDark()">
+    <div class="h-10 w-10 flex items-center justify-center rounded-lg p-2 transition-colors duration-200 hover:bg-yellow-100 dark:hover:bg-gray-100 cursor-pointer" @click="toggleDark()">
 
         <!-- Icona della luna (modalità dark) -->
         <span class="material-symbols-outlined material-symbols-font-600 text-gray-400 !hidden dark:!block"> dark_mode </span>

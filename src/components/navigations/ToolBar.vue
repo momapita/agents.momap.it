@@ -21,6 +21,7 @@
         <template #end>
             <div class="flex items-center gap-2">
                 <ToggleTheme />
+                <LanguageSwitcher />
                 <Avatar image="https://primefaces.org/cdn/primevue/images/avatar/amyelsner.png" class="w-8 h-8" />
             </div>
         </template>
@@ -35,6 +36,7 @@
 
     // components imports
     import ToggleTheme from '@/components/reusable/ToggleTheme.vue';
+    import LanguageSwitcher from '@/components/reusable/LanguageSwitcher.vue';
 
     // primevue imports
     import Toolbar from 'primevue/toolbar';

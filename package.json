@@ -16,8 +16,6 @@
     "@vueuse/core": "^10.11.0",
     "autoprefixer": "^10.4.19",
     "axios": "^1.7.2",
-    "axios-extensions": "^3.1.6",
-    "axios-retry": "^4.4.1",
     "dayjs": "^1.11.11",
     "js-cookie": "^3.0.5",
     "mobile-device-detect": "^0.4.3",
@@ -31,6 +29,8 @@
     "vite-plugin-image-optimizer": "^1.1.8",
     "vite-plugin-package-version": "^1.1.0",
     "vue": "^3.4.29",
+    "vue-country-flag-next": "^2.3.2",
+    "vue-i18n": "^9.13.1",
     "vue-router": "^4.3.3",
     "yup": "^1.4.0"
   },

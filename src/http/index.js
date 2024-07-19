@@ -1,7 +1,4 @@
 import axios from 'axios';
-import axiosRetry from 'axios-retry';
-import { cacheAdapterEnhancer, throttleAdapterEnhancer } from 'axios-extensions';
-import adapter from 'axios/lib/adapters/xhr';
 //import { useAuthStore } from '@/stores/auth.js';
 
 class ApiService {
@@ -10,12 +7,8 @@ class ApiService {
 
     this.api = axios.create({
       baseURL: baseURL ?? "https://auth-api.momap.it/v1",
-      adapter: throttleAdapterEnhancer(cacheAdapterEnhancer(adapter, true)),
       timeout: 25000
     });
-
-    // Configuro il retry per le richieste
-    axiosRetry(this.api, { retries: 3, retryDelay: axiosRetry.exponentialDelay });
 
     /*// Interceptor per aggiungere il token JWT
     this.api.interceptors.request.use(config => {
@@ -69,7 +62,7 @@ class ApiService {
     } else {
       return new Error('Errore nella richiesta: ' + error.message);
     }
-  } 
+  }
 
   async request(method, endpoint, data = null, config = {}) {
     try {
@@ -107,6 +100,7 @@ class ApiService {
   setHeaders(headers) {
     this.api.defaults.headers = { ...this.api.defaults.headers, ...headers };
   }
+  
 }
 
 const apiService = new ApiService(import.meta.env.VITE_API_URL);

@@ -2,6 +2,9 @@ import { createApp } from 'vue';
 import router from '@/router';
 import App from './App.vue';
 
+// import i18n per il multilingua
+import i18n from "./i18n";
+
 // import per pinia e il persist date
 import { createPinia } from 'pinia';
 
@@ -33,6 +36,9 @@ app.use(createPinia());
 
 // Use Router
 app.use(router);
+
+// Gestione del multilingua
+app.use(i18n);
 
 // Use veeValidate
 app.component('Field', Field);
