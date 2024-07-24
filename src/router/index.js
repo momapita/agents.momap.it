@@ -1,7 +1,9 @@
+// based imports router
 import { createRouter, createWebHistory, RouterView } from 'vue-router';
 import Tr from "@/i18n/translation";
 import { authMiddleware } from './middleware';
 
+// first views import
 import LoginView from '@/views/Login.vue';
 
 const router = createRouter({
