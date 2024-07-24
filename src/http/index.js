@@ -6,7 +6,7 @@ class ApiService {
   constructor(baseURL) {
 
     this.api = axios.create({
-      baseURL: baseURL ?? "https://auth-api.momap.it/v1",
+      baseURL: baseURL ?? "https://auth-api.momap.it/v1/agents",
       timeout: 25000
     });
 

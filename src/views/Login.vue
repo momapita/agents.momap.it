@@ -32,6 +32,9 @@
     import * as yup from "yup";
     import { useI18n } from "vue-i18n";
 
+    // error handler import
+    import { withErrorHandling } from '@/helpers/errorHandler';
+
     // definisco la lingua
     const { t } = useI18n();
 
@@ -60,8 +63,11 @@
         }
     });
 
-    const onSave = (event) => {
+    const onSave = withErrorHandling(async (event) => {
+        if(event){
+            throw new Error('Invalid event');
+        }
         console.log(event);
-    }
+    });
 
 </script>

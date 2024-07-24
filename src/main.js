@@ -24,8 +24,11 @@ import './style.css';
 import '@fontsource-variable/inter';
 import "@fontsource-variable/material-symbols-outlined";
 
-// import dei servizi di primeVue
+// import dei servizi di primeVue e locali per la gestione del toast
 import ToastService from 'primevue/toastservice';
+import ToastBus from '@/services/globalToastBus';
+
+// Import del tooltip
 import Tooltip from 'primevue/tooltip';
 
 // Create App
@@ -67,6 +70,9 @@ app.directive('tooltip', Tooltip);
 
 // Setto globalmente la variabile della CDN
 app.provide('cdnUrl', import.meta.env.VITE_CDN_URL);
+
+// Setto globalmente la variabile del toast
+app.provide('toastBus', ToastBus);
 
 // Mount App
 app.mount('#app')
