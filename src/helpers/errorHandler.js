@@ -6,7 +6,7 @@ import i18n from "@/i18n";
 const { t } = i18n.global;
 
 // Funzione per gestire gli errori con un handler globale
-export const withErrorHandling = (fn, successMessage = 'general.success', errorMessage = 'general.error') => async (...args) => {
+export const executeWithGlobalErrorHandling = (fn, successMessage = 'general.success', errorMessage = 'general.error') => async (...args) => {
   try {
       
       // eseguo la funzione
@@ -16,6 +16,38 @@ export const withErrorHandling = (fn, successMessage = 'general.success', errorM
       handleGlobalSuccess(successMessage);
 
       return result;
+  } catch (error) {
+    handleGlobalError(error, errorMessage);
+  }
+};
+
+// Funzione per gestire gli errori con un handler globale per l'onSubmit del formGenerator
+export const executeFormWithGlobalErrorHandling = (fn, successMessage = 'general.success', errorMessage = 'general.error') => async (...args) => {
+  try {
+
+    if(!args || !Array.isArray(args) || args.length === 0) {
+      throw new Error('Invalid args');
+    }
+
+    const values = args[0] || {};
+
+    // controllo che esista event
+    if(!values || typeof values !== 'object' || Object.keys(values).length === 0) {
+      throw new Error('Invalid event');
+    }
+  
+    // controllo che esista event.event
+    if(!values?.event || typeof values?.event !== 'object' || Object.keys(values?.event).length === 0) {
+        throw new Error('Invalid event object');
+    }
+      
+    // Eseguo la funzione
+    const result = await fn(...args);
+
+    // Gestisco il toast di successo
+    handleGlobalSuccess(successMessage);
+
+    return result;
   } catch (error) {
     handleGlobalError(error, errorMessage);
   }

@@ -12,6 +12,9 @@ import { createPinia } from 'pinia';
 import { Field, Form, ErrorMessage } from 'vee-validate';
 import FormGenerator from "@/components/form/FormGenerator.vue";
 
+// import http service
+import HttpService from "@/http";
+
 // Import PrimeVue and theme
 import PrimeVue from 'primevue/config';
 import { themePreset } from '@/theme';
@@ -73,6 +76,9 @@ app.provide('cdnUrl', import.meta.env.VITE_CDN_URL);
 
 // Setto globalmente la variabile del toast
 app.provide('toastBus', ToastBus);
+
+// Setto globalmente l'HttpService
+app.provide('HttpService', HttpService);
 
 // Mount App
 app.mount('#app')

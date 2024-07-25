@@ -132,7 +132,7 @@
     });
 
     // definisco gli emits
-    const emits = defineEmits(['onSave']);
+    const emits = defineEmits(['submit']);
 
     // definisco una variabile per tenere traccia degli errori
     const errorFormatter = ref(false);
@@ -169,7 +169,7 @@
             };
       
             // emetto l'evento onSave
-            emits('onSave', obj);
+            emits('submit', obj);
 
         } catch (error) {
             console.error('Error in onSaveEdit', error);

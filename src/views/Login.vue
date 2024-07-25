@@ -13,13 +13,7 @@
 
         <!-- Form -->
         <div class="lg:col-span-7 flex items-center justify-center">
-            <FormGenerator
-                :fields="formModel"
-                :tKey="'forms'"
-                @onSave="onSave"
-                class="w-full"
-                :btnSave="{ label: 'general.login' }"
-            />
+            <FormGenerator :fields="formModel" :tKey="'forms'" class="w-full" :btnSave="{ label: 'general.login' }" @submit="onSubmit" />
         </div>
 
     </WrapperLayout>
@@ -28,15 +22,18 @@
 <script setup>
 
     // base imports
-    import { ref } from 'vue';
+    import { ref, inject } from 'vue';
     import * as yup from "yup";
     import { useI18n } from "vue-i18n";
 
     // error handler import
-    import { withErrorHandling } from '@/helpers/errorHandler';
+    import { executeFormWithGlobalErrorHandling } from '@/helpers/errorHandler';
 
     // definisco la lingua
     const { t } = useI18n();
+
+    // import http service
+    const HttpService = inject('HttpService');
 
     // definisco il modello per il form
     const formModel = ref({
@@ -63,11 +60,9 @@
         }
     });
 
-    const onSave = withErrorHandling(async (event) => {
-        if(event){
-            throw new Error('Invalid event');
-        }
-        console.log(event);
+    const onSubmit = executeFormWithGlobalErrorHandling(async (values) => {
+        const response = await HttpService.post('login', values?.event);
+        console.log(response);
     });
 
 </script>

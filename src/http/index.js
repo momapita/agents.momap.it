@@ -6,7 +6,7 @@ class ApiService {
   constructor(baseURL) {
 
     this.api = axios.create({
-      baseURL: baseURL ?? "https://auth-api.momap.it/v1/agents",
+      baseURL: baseURL ?? "https://agents-api.momap.it/",
       timeout: 25000
     });
 
@@ -52,8 +52,18 @@ class ApiService {
           return new Error('Non autorizzato: ' + error.response.data.message);
         case 404:
           return new Error('Risorsa non trovata: ' + error.response.data.message);
+        case 422:
+          return new Error('Errore di validazione: ' + error.response.data.message);
+        case 429:
+          return new Error('Troppi tentativi di accesso: ' + error.response.data.message);
         case 500:
           return new Error('Errore interno del server: ' + error.response.data.message);
+        case 502:
+          return new Error('Errore di rete: ' + error.response.data.message);
+        case 503:
+          return new Error('Servizio non disponibile: ' + error.response.data.message);
+        case 504:
+          return new Error('Timeout: ' + error.response.data.message);
         default:
           return new Error('Errore: ' + error.response.data.message);
       }
@@ -103,6 +113,6 @@ class ApiService {
   
 }
 
-const apiService = new ApiService(import.meta.env.VITE_API_URL);
+const HttpService = new ApiService(import.meta.env.VITE_API_URL);
 
-export default apiService;
+export default HttpService;
