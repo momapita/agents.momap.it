@@ -22,6 +22,9 @@ import { themePreset } from '@/theme';
 // Import dei vari layout
 import Wrapper from '@/theme/layouts/Wrapper.vue';
 
+// Import del componente DatatableWrapper
+import DataTableWrapper from '@/components/dataViews/DataTableWrapper.vue';
+
 // Import Styles And Fonts
 import './style.css';
 import '@fontsource-variable/inter';
@@ -79,6 +82,8 @@ app.provide('toastBus', ToastBus);
 
 // Setto globalmente l'HttpService
 app.provide('HttpService', HttpService);
+
+app.component('DataTableWrapper', DataTableWrapper);
 
 // Mount App
 app.mount('#app')
