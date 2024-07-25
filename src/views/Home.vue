@@ -1,19 +1,18 @@
 <template>
-    <div>
-        {{ $t('forms.email.placeholder') }}
-        {{ $n(10000, 'currencyFormat') }}
-    </div>
-    <DataTableWrapper :pageName="'users'" :contextMenuSelection="contextMenuSelection" />
+    <DataTableWrapper
+        :pageName="'users'"
+        :rows="15"
+        :contextMenuSelection="contextMenuSelection"
+        :headerButtons="headerButtons"
+    />
 </template>
 
 <script setup>
     import { ref } from 'vue';
 
-
+    // definisco l'oggetto per la gestione del context menu
     const contextMenuSelection = ref({
-        compactMenu: false,
         show: true,
-        frozen: true,
         obj: [
             {
                 type: 'edit',
@@ -28,22 +27,19 @@
                 action: (event) => {
                     console.log("delete", event);
                 }
-            },
-            {
-                type: 'export',
-                disabled: false,
-                action: (event) => {
-                    console.log("export", event);
-                }
-            },
-            {
-                type: 'share',
-                disabled: false,
-                action: (event) => {
-                    console.log("share", event);
-                }
             }
         ]
     });
+
+    // definisco la funzione per pulsanti nell'header della tabella
+    const headerButtons = ref([
+        {
+            type: 'add',
+            disabled: false,
+            action: (event) => {
+                console.log("add", event);
+            }
+        }
+    ])
 
 </script>

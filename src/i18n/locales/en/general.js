@@ -175,4 +175,7 @@ export default {
     uploadFiles: "Upload Files",
     downloadFiles: "Download Files",
     options: "Options",
+    dataNotFound: "Data Not Found",
+    reload: "Reload",
+    totals: "Totals",
 };

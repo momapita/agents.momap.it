@@ -172,4 +172,7 @@ export default {
     uploadFiles: "Upload Files",
     downloadFiles: "Download Files",
     options: "Opzioni",
+    dataNotFound: "Nessun Dato Trovato",
+    reload: "Ricarica",
+    totals: "Totali",
 }

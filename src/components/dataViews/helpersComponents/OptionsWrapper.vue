@@ -1,5 +1,5 @@
 <template>
-    <div class="text-sm" :class="{ 'flex items-center justify-start gap-2': referenceState != 'contextMenu' }">
+    <div :class="{ 'flex items-center justify-start gap-2': referenceState != 'contextMenu' }">
         
         <!-- Sezione se il type è default -->
         <section

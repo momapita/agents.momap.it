@@ -5,6 +5,11 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+    scroll-behavior: smooth;
+    @apply text-sm;
+}
+
 body {
     font-family: 'Inter Variable', sans-serif;
 }
@@ -12,7 +17,7 @@ body {
 @layer utilities {
     
     ::selection {
-        @apply bg-momap1/40 text-white; 
+        @apply bg-momap text-white; 
     }
     
     ::-webkit-scrollbar {
@@ -24,7 +29,7 @@ body {
     }
 
     ::-webkit-scrollbar-thumb {
-        @apply bg-momap1/40 rounded-lg;
+        @apply  bg-momap1/40 dark:bg-white rounded-lg;
     }
 
 }
