@@ -17,8 +17,7 @@
     const dialog = useDialog();
 
     const showDialog = (args, data) => {
-        console.log("showDialog", args, data);
-        dialog.open(args, data);
+      dialog.open(args, data);
     }
 
     // definisco gli eventi per il toast

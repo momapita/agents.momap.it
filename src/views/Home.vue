@@ -7,12 +7,14 @@
         :visibleColumns="['us__name','us__last_name', 'ut__description']"
         :filterColumns="['us__name', 'ut__description']"
         :sumCols="['us__name', 'ut__description']"
+        :colsFormat="colsFormat"
         :toolBarStyle="false"
     />
 </template>
 
 <script setup>
     import { ref } from 'vue';
+    import TableServices from '@/helpers/table';
 
     // definisco l'oggetto per la gestione del context menu
     const contextMenuSelection = ref({
@@ -47,4 +49,7 @@
         }
     ]);
 
+    const colsFormat = [
+        ...TableServices.formatterBaseCols(['us__name', 'us__last_name'], 2)
+    ]
 </script>

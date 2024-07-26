@@ -63,6 +63,7 @@ class TableHelper {
     basedDialogOptions(){
         return {
             props: {
+                header: t('general.info'),
                 modal: true,
                 draggable: true,
                 dismissableMask: true,
@@ -74,19 +75,41 @@ class TableHelper {
         }
     }
 
-    test123(){
-
+    emitShowInfo(info){
+        
+        // Setto le options
         const options = {
             ...this.basedDialogOptions(),
-            data: {
-                info: 'test informazioni'
-            }
+            data: { info }
         }
 
+        // Emitto il dialog
         DialogBus.emit(InfoWrapper, options);
+
     }
 
-    //formatterBaseCols()
+    formatterBaseCols(arr, valTruncate = 15, translateKey = null){
+        return arr.map((el) => {
+            return {
+                header: el,
+                components: defineAsyncComponent(() => import("@/components/reusable/Empity.vue")),
+                formatter: {
+                    multiple: false,
+                    format: (val) => {
+                      return val ? this.truncateString(translateKey ? t(`${translateKey}.${val}`) : val, valTruncate) : t("general.dataNotFound");
+                    },
+                },
+                dinamicProps: (colData) => {
+                    return {
+                      onclick: () => {
+                        this.truncateString(colData, valTruncate, true) && this.emitShowInfo(colData);
+                      },
+                      class: this.truncateString(colData, valTruncate, true) ? "cursor-pointer underline max-w-full truncate-all text-zinc-400 dark:text-zinc-100" : "",
+                    };
+                },
+            }
+        });
+    }
 }
 
 const TableServices = new TableHelper();

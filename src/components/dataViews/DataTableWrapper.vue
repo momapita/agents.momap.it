@@ -10,7 +10,6 @@
     <!-- Skeleton se non ci sono dati -->
     <Skeleton height="100%" v-if="!firstLoading" />
 
-
     <template v-else>
 
         <Toolbar class="mb-6" v-if="toolBarStyle && headerButtons">
@@ -150,7 +149,97 @@
                 :field="column.Field"
                 :header="column.Header"
                 :sortable="true"
-            />
+                :showFilterMenu="column.Field in filters && column.Field !== 'id'"
+                :showFilterMatchModes="false"
+                :filterField="column.Field in filters && column.Field !== 'id' ? column.Field : null"
+                :frozen="getColsFormat(column.Field)?.frozen === true"
+            >
+
+                <!-- Template icona del filtro -->
+                <template #filtericon>
+                    <span class="material-symbols-outlined material-symbols-font-300"> search </span>
+                </template>
+
+                <!-- Template del filtro -->
+                <template #filter="{filterModel,filterCallback}">
+                    <div v-if="column.Field in filters">
+
+                        <!-- se presente filterModel lo renderizzo -->
+                        <div v-if="getColsFormat(column.Field)?.filterModel && getColsFormat(column.Field)?.filterModel.components">
+                        <component
+                            :is="getColsFormat(column.Field)?.filterModel?.components"
+                            class="!z-1"
+                            v-bind="getColsFormat(column.Field)?.filterModel?.bind"
+                            v-model="filterModel.value"
+                        />
+                        </div>
+
+                        <div v-else>
+                            <InputText v-model="filterModel.value" />
+                        </div>
+                    </div>
+                </template>
+
+                <!-- Template del body -->
+                <template #body="{ data }">
+
+                    <div v-if="colsFormat.find(item => item.header.toLowerCase() === column.Field.toLowerCase())" :id="`tour_table_${column.Field}`">
+                        
+                        <!-- Se è presente un componente lo renderizzo -->
+                        <component 
+                            v-if="getColsFormat(column.Field)?.components && !getColsFormat(column.Field).func"
+                            :is="getColsFormat(column.Field).components"
+                            v-bind="{
+                                ...(getColsFormat(column.Field).dinamicProps ? 
+                                (
+                                    getColsFormat(column.Field)?.dinamicPropsMultiple ? getColsFormat(column.Field).dinamicProps(data) : getColsFormat(column.Field).dinamicProps(data[column.Field])
+                                )
+                                : {}
+                                )
+                            }"
+                        >
+
+                            <!-- Eseguo la formattazione singola se richiesta -->
+                            <p v-if="getColsFormat(column.Field).formatter && !getColsFormat(column.Field).formatter?.multiple">
+                                {{ getColsFormat(column.Field).formatter.format(data[column.Field]) }}
+                            </p>
+
+                            <!-- Eseguo la formattazione multipla se richiesta -->
+                            <p v-else-if="getColsFormat(column.Field).formatter && getColsFormat(column.Field).formatter?.multiple">
+                                {{ getColsFormat(column.Field).formatter.format(data) }}
+                            </p>
+
+                            <!-- Se la formattazione non c'è -->
+                            <div v-else>
+                                {{ data[column.field] != '' ? data[column.Field] : $t('general.dataNotFound') }}
+                            </div>
+
+
+                        </component>
+
+                        <!-- Se non è un componente, lo renderizzo in base a func  -->
+                        <component
+                            v-else
+                            :is="getColsFormat(column.Field).func(data[column.Field])"
+                            v-bind="{
+                                ...(getColsFormat(column.Field).dinamicProps ? 
+                                (
+                                    getColsFormat(column.Field)?.dinamicPropsMultiple ? getColsFormat(column.Field).dinamicProps(data) : getColsFormat(column.Field).dinamicProps(data[column.Field])
+                                )
+                                : {}
+                                )
+                            }"
+                        />
+
+                    </div>
+
+                    <div v-else :id="`tour_table_${column.Field}`">
+                        {{ data[column.Field] != '' ? data[column.Field] : $t('general.dataNotFound') }}
+                    </div>
+
+                </template>
+
+            </Column>
 
             <!-- Se è richiesta la colonna delle opzioni, la aggiungo -->
             <Column
@@ -167,6 +256,7 @@
         </DataTable>
 
     </template>
+
 </template>
 
 <script setup>
@@ -178,7 +268,6 @@
     // Services imports
     import dayjs from 'dayjs';
     import TableServices from '@/helpers/table';
-    import { useDialog } from 'primevue/usedialog';
     import { isMobile } from 'mobile-device-detect';
 
     // helpers components imports
@@ -647,8 +736,6 @@
 
         // setto il loading a true
         firstLoading.value = true;
-
-        TableServices.test123();
 
     });
 
