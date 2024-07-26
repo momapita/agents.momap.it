@@ -97,10 +97,7 @@
 
     // Services imports
     import { formatFormModelValues } from "@/helpers/form.js";
-    import DateHelper from '@/helpers/date';
-
-    // Creo l'istanza del servizio data
-    const dateServices = new DateHelper();
+    import DateServices from '@/helpers/date';
 
     // definisco le props
     const props = defineProps({
@@ -157,7 +154,7 @@
             // formatto tutte le date in event, se presenti in localData.value e col type calendar
             for (const key in localData.value) {
                 if (localData.value[key].type === 'calendar') {
-                    event[key] = dateServices.formatDateValue(event[key]);
+                    event[key] = DateServices.formatDateValue(event[key]);
                     localData.value[key].model = event[key];
                 }
             }

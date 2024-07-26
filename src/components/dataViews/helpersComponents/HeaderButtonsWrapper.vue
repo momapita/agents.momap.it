@@ -1,10 +1,11 @@
 <template>
-    <div class="flex flex-wrap gap-4 items-center justify-start pb-2" v-if="Array.isArray(items) && items.length > 0">
+    <div class="flex flex-wrap gap-4 items-center justify-start w-full" v-if="Array.isArray(items) && items.length > 0">
         <Button 
             v-for="(item, index) in items"
             :key="index"
             v-bind="(item?.type in mapArrType) && mapArrType[item?.type]?.bind ? mapArrType[item?.type]?.bind : null"
             @click="item?.action"
+            :class="$style.headerButtonTable"
         >
             <span class="material-symbols-outlined material-symbols-font-300"> {{ mapArrType[item?.type]?.icon }} </span>
 
@@ -79,3 +80,9 @@
     );
 
 </script>
+
+<style module>
+    .headerButtonTable {
+        padding: 0.40rem 0.75rem !important;
+    }
+</style>

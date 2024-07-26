@@ -1,5 +1,12 @@
 <template>
+  
+  <!-- Toast component -->
   <ToastWrapper />
+
+  <!-- Dinamic Dialog component -->
+  <DynamicDialogWrapper />
+
+  <!-- Main component -->
   <div class="flex flex-col h-screen">
     <ToolBar/>
     <div class="grow py-4 px-2 lg:px-6 overflow-y-auto overflow-x-hidden">
@@ -7,6 +14,7 @@
     </div>
     <BottomNavigation v-if="isLoggedIn" class="lg:!hidden" />
   </div>
+
 </template>
 
 <script setup>
@@ -19,6 +27,9 @@
 
   // import Toast component
   import ToastWrapper from '@/components/reusable/ToastWrapper.vue';
+
+  // import Dinamic Dialog component
+  import DynamicDialogWrapper from '@/components/reusable/DinamicDialogWrapper.vue';
 
   // navigations components imports
   import ToolBar from '@/components/navigations/ToolBar.vue';

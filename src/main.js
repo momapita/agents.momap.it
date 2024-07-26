@@ -34,6 +34,10 @@ import "@fontsource-variable/material-symbols-outlined";
 import ToastService from 'primevue/toastservice';
 import ToastBus from '@/services/globalToastBus';
 
+// import dei servizi di primeVue e locali per la gestione del dialog
+import DialogService from 'primevue/dialogservice';
+import DialogBus from '@/services/globalDialogBus';
+
 // Import del tooltip
 import Tooltip from 'primevue/tooltip';
 
@@ -72,6 +76,7 @@ app.component('WrapperLayout', Wrapper);
 
 // Use primevue Services
 app.use(ToastService);
+app.use(DialogService);
 app.directive('tooltip', Tooltip);
 
 // Setto globalmente la variabile della CDN
@@ -79,6 +84,9 @@ app.provide('cdnUrl', import.meta.env.VITE_CDN_URL);
 
 // Setto globalmente la variabile del toast
 app.provide('toastBus', ToastBus);
+
+// Setto globalmente la variabile del dialog
+app.provide('dialogBus', DialogBus);
 
 // Setto globalmente l'HttpService
 app.provide('HttpService', HttpService);

@@ -4,6 +4,10 @@
         :rows="15"
         :contextMenuSelection="contextMenuSelection"
         :headerButtons="headerButtons"
+        :visibleColumns="['us__name','us__last_name', 'ut__description']"
+        :filterColumns="['us__name', 'ut__description']"
+        :sumCols="['us__name', 'ut__description']"
+        :toolBarStyle="false"
     />
 </template>
 
@@ -13,6 +17,7 @@
     // definisco l'oggetto per la gestione del context menu
     const contextMenuSelection = ref({
         show: true,
+        frozen: false,
         obj: [
             {
                 type: 'edit',
@@ -40,6 +45,6 @@
                 console.log("add", event);
             }
         }
-    ])
+    ]);
 
 </script>

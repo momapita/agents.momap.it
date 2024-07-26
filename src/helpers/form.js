@@ -1,10 +1,7 @@
 /***** Queste sono tutte utilità per la gestione dei form e dei modelli del form *****/
 
 // Import dei servizi
-import DateHelper from '@/helpers/date';
-
-// Creo l'istanza del servizio
-const dateServices = new DateHelper();
+import DateServices from '@/helpers/date';
 
 // Funzione per resettare un modello semplice
 export const ResetModel = (model) => {
@@ -109,7 +106,7 @@ export const formatEvent = (event) => {
         if (event.hasOwnProperty(key)) {
           const value = event[key];
           if (value instanceof Date) {
-            formattedEvent[key] = dateServices.formatDateValue(value);
+            formattedEvent[key] = DateServices.formatDateValue(value);
           } else {
             formattedEvent[key] = value === '' ? null : value;
           }
@@ -233,7 +230,7 @@ export const formatFormModelValues = (model) => {
   
       // Funzione per formattare i valori di tipo calendar
       const formatDateValue = (value) => {
-        return dateServices.checkDate(value) ? new Date(value) : null;
+        return DateServices.checkDate(value) ? new Date(value) : null;
       };
   
       // Itero gli elementi per formattare i valori

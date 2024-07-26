@@ -112,4 +112,6 @@ class DateHelper {
 
 }
 
-export default DateHelper;
+const DateServices = new DateHelper();
+
+export default DateServices;
