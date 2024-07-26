@@ -10,9 +10,10 @@
         :colsFormat="colsFormat"
         :toolBarStyle="false"
     />
-</template>
+</template> 
 
 <script setup>
+    
     import { ref } from 'vue';
     import TableServices from '@/helpers/table';
 
@@ -50,6 +51,7 @@
     ]);
 
     const colsFormat = [
-        ...TableServices.formatterBaseCols(['us__name', 'us__last_name'], 2)
+        ...TableServices.formatterBaseCols(['us__name', 'us__last_name'], 12)
     ]
+
 </script>

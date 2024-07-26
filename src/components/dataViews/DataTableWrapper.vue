@@ -73,7 +73,7 @@
             @sort="onEventsDatatable($event)"
             @filter="onEventsDatatable($event)"
             :filterDisplay="filterColumns && filterColumns.length > 0 ? filterDisplay : null"
-            :globalFilterFields="filterColumns || []"
+            :globalFilterFields="filterColumns && filterColumns.length > 0 ? filterColumns : []"
             paginator
             :paginatorTemplate="`${!isMobile ? 'RowsPerPageDropdown FirstPageLink' : '' } PrevPageLink CurrentPageReport NextPageLink ${!isMobile ? 'LastPageLink' : '' }`"
             :currentPageReportTemplate="`{last} di {totalRecords} ${$t('general.totals')}`"
@@ -147,12 +147,13 @@
                 v-for="column in columns"
                 :key="column.Field"
                 :field="column.Field"
-                :header="column.Header"
+                :header="$t(`table.${column.Header}`)"
                 :sortable="true"
                 :showFilterMenu="column.Field in filters && column.Field !== 'id'"
                 :showFilterMatchModes="false"
                 :filterField="column.Field in filters && column.Field !== 'id' ? column.Field : null"
                 :frozen="getColsFormat(column.Field)?.frozen === true"
+                :active="true"
             >
 
                 <!-- Template icona del filtro -->
