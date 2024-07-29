@@ -1,5 +1,4 @@
 <template>
-    <RouterLink to="/login">Users</RouterLink>
     <DataTableWrapper
         :pageName="'users'"
         :rows="15"
