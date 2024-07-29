@@ -12,7 +12,12 @@
         </div>
 
         <!-- Form -->
-        <div class="lg:col-span-7 flex items-center justify-center">
+        <div class="lg:col-span-7 flex items-center justify-center flex-col gap-4 md:gap-6 lg:gap-12">
+
+            <!-- Block Maiusc active -->
+            <Message severity="warn" v-if="capsLockOn" closable class="w-full">{{ $t('general.block_maiusc_active') }}</Message>
+
+            <!-- Form -->
             <FormGenerator :fields="formModel" :tKey="'forms'" class="w-full" :btnSave="{ label: 'general.login' }" @submit="onSubmit" />
         </div>
 
@@ -23,7 +28,6 @@
 
     // base imports
     import { ref, inject } from 'vue';
-    import * as yup from "yup";
     import { useI18n } from "vue-i18n";
 
     // error handler import
@@ -35,6 +39,12 @@
     // import http service
     const HttpService = inject('HttpService');
 
+    // definisco la variabile per il caps lock e la funzione per controllarlo
+    const capsLockOn = ref(false);
+    const checkCapsLock = (event) => {
+        capsLockOn.value = event?.getModifierState && event.getModifierState('CapsLock');
+    };
+
     // definisco il modello per il form
     const formModel = ref({
         email: {
@@ -43,7 +53,10 @@
             placeholder: "email.placeholder",
             model: null,
             type: "text",
-            rules: yup.string().email(()=> t('forms.email.validate')).required(() => t('forms.required')),
+            bind: {
+                onkeydown: checkCapsLock
+            },
+            rules: 'required|email',
             localTranslate: true
         },
         password: {
@@ -54,11 +67,13 @@
             type: "password",
             bind: {
                 toggleMask: true,
-                feedback: false
+                feedback: false,
+                onkeydown: checkCapsLock
             },
-            rules: yup.string().required(() => t('forms.required')).min(6, () => t('forms.password.validate')),
+            rules: 'required|min:6',
         }
     });
+
 
     const onSubmit = executeFormWithGlobalErrorHandling(async (values) => {
         const response = await HttpService.post('login', values?.event);

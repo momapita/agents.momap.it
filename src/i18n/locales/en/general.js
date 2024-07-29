@@ -178,4 +178,5 @@ export default {
     dataNotFound: "Data Not Found",
     reload: "Reload",
     totals: "Totals",
+    block_maiusc_active: "Block Maiusc Active",
 };

@@ -3,6 +3,10 @@
 // Import dei servizi
 import DateServices from '@/helpers/date';
 
+// Import per vee validate
+import { defineRule } from 'vee-validate';
+import { all } from '@vee-validate/rules';
+
 // Funzione per resettare un modello semplice
 export const ResetModel = (model) => {
     return Object.fromEntries(Object.keys(model.value).map((key) => [key, null]));
@@ -265,4 +269,11 @@ export const formatFormModelValues = (model) => {
       console.error('Error in formatFormModelValues', error);
       return null;
     }
+}
+
+// Funzione per configurare la validazione di vee-validate
+export const setGlobalRules = () => {
+  Object.entries(all).forEach(([name, rule]) => {
+    defineRule(name, rule);
+  });
 }

@@ -10,6 +10,7 @@ import { createPinia } from 'pinia';
 
 // import per vee validate e formGenerator
 import { Field, Form, ErrorMessage } from 'vee-validate';
+import { setGlobalRules } from "@/helpers/form.js"; 
 import FormGenerator from "@/components/form/FormGenerator.vue";
 
 // import http service
@@ -57,6 +58,9 @@ app.use(router);
 app.component('Field', Field);
 app.component('Form', Form);
 app.component('ErrorMessage', ErrorMessage);
+
+// setto globalmente le rules
+setGlobalRules();
 
 // Use formGenerator
 app.component('FormGenerator', FormGenerator);

@@ -1,0 +1,31 @@
+export default {
+    code: 'it',
+    messages: {
+        alpha: "Il campo può contenere solo caratteri alfabetici",
+        alpha_num: "Il campo può contenere solo caratteri alfanumerici",
+        alpha_dash: "Il campo può contenere caratteri alfa-numerici così come lineette e trattini di sottolineatura",
+        alpha_spaces: "Il campo può contenere solo caratteri alfanumerici così come spazi",
+        between: "Il campo deve essere compreso tra 0:{min} e 1:{max}",
+        confirmed: "Il campo non corrisponde",
+        digits: "Il campo deve essere numerico e contenere esattamente 0:{length} cifre",
+        dimensions: "Il campo deve essere 0:{width} x 1:{height}",
+        email: "Il campo deve essere un indirizzo email valido",
+        not_one_of: "Il campo deve avere un valore valido",
+        ext: "Il campo deve essere un file valido",
+        image: "Il campo deve essere un'immagine",
+        integer: "Il campo deve essere un numero",
+        is_not: "Il campo non è valido",
+        length: "La lunghezza del campo deve essere 0:{length}",
+        max_value: "Il campo deve essere minore o uguale a 0:{max}",
+        max: "Il campo non può essere più lungo di 0:{length} caratteri",
+        mimes: "Il campo deve avere un tipo di file valido",
+        min_value: "Il campo deve essere maggiore o uguale a 0:{min}",
+        min: "Il campo deve avere almeno 0:{length} caratteri",
+        numeric: "Il campo può contenere solo caratteri numerici",
+        one_of: "Il campo deve avere un valore valido",
+        regex: "Il campo non ha un formato valido",
+        required: "Il campo è richiesto",
+        required_if: "Il campo è richiesto",
+        size: "Il campo deve essere inferiore a 0:{size}KB"
+    }
+}

@@ -33,6 +33,7 @@
     // components and primevue imports
     import CountryFlag from 'vue-country-flag-next';
     import { usePrimeVue } from "primevue/config";
+    import { setLocale as setVeeValidateLocale } from '@vee-validate/i18n';
 
     // dichiaro le variabili che mi servono per il multilingua
     const { locale, t } = useI18n();
@@ -98,6 +99,9 @@
             if(primevueMessage) {
                 primevue.config.locale = primevueMessage;
             }
+
+            // setto la lingua per VeeValidate
+            setVeeValidateLocale(locale);
 
             // cambio la lingua dell'url
             try {

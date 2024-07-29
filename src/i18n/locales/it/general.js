@@ -175,4 +175,5 @@ export default {
     dataNotFound: "Nessun Dato Trovato",
     reload: "Ricarica",
     totals: "Totali",
+    block_maiusc_active: "Blocca Maiuscole attivo",
 }
