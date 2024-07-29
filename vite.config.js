@@ -7,6 +7,10 @@ import { fileURLToPath, URL } from 'url';
 // configure mkcert
 import mkcert from 'vite-plugin-mkcert';
 
+// import path and VueI18nPlugin
+import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
+import { dirname, resolve } from 'path';
+
 // import version
 import version from 'vite-plugin-package-version';
 
@@ -23,6 +27,12 @@ export default defineConfig({
   plugins: [
     vue(),
     version(),
+    VueI18nPlugin({
+      runtimeOnly: false,
+      include: [
+        resolve(dirname(fileURLToPath(import.meta.url)), './src/i18n/locales/**'),
+      ],
+    }),
     mkcert(),
     Components({
       resolvers: [ PrimeVueResolver() ]

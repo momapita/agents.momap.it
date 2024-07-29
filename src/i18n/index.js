@@ -42,7 +42,7 @@ export default createI18n({
   legacy: false,
   globalInjection: true,
   messages: { it: itBaseI18n },
-  runtimeOnly: true,
+  runtimeOnly: false,
   numberFormats,
   datetimeFormats
 });

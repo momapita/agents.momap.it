@@ -1,3 +1,4 @@
+
 /*// Funzione che controlla se esistono i permessi
 export const existsPermission = () => {
     try {
@@ -105,6 +106,5 @@ const checkerWelcomeFleetManagement = async (to, next) => {
 
 // Middleware
 export const authMiddleware = (to, from, next) => {
-    //console.log('authMiddleware', to, from);
     next();
 }

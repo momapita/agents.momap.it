@@ -1,29 +1,33 @@
 // based imports router
 import { createRouter, createWebHistory, RouterView } from 'vue-router';
 import Tr from "@/i18n/translation";
-import { authMiddleware } from './middleware';
 
 // first views import
-import LoginView from '@/views/Login.vue';
+import HomeView from '@/views/Home.vue';
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.VITE_BASE_URL || '/'),
+  history: createWebHistory(import.meta.env.VITE_BASE_URL),
   routes: [
     {
       path: "/:locale?",
       component: RouterView,
-      beforeEnter: Tr.authMiddleware,
+      beforeEnter: Tr.routeMiddleware,
       children: [
+
+        // Login
         {
           path: 'login',
           name: 'login',
-          component: LoginView,
+          component: () => import('@/views/Login.vue'),
         },
+
+        // HomePage
         {
           path: '',
           name: 'home',
-          component: () => import('@/views/Home.vue')
-        },
+          component: HomeView 
+        }
+        
       ]
     },
     {
@@ -35,6 +39,4 @@ const router = createRouter({
 });
 
 // Middleware per l'autenticazione
-router.beforeEach(authMiddleware);
-
 export default router;

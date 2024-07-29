@@ -20,7 +20,7 @@
 <script setup>
 
   // based imports
-  import { ref, onMounted } from 'vue';
+  import { ref, onMounted, computed } from 'vue';
 
   // services imports
   import { useDark } from '@vueuse/core';
@@ -35,8 +35,11 @@
   import ToolBar from '@/components/navigations/ToolBar.vue';
   import BottomNavigation from '@/components/navigations/BottomNavigation.vue';
 
+  // store imports
+  import { useAuthStore } from '@/stores/auth.js';
+
   // dichiaro una variabile statica per i test di login
-  const isLoggedIn = ref(false);
+  const isLoggedIn = computed(() => useAuthStore().getAuthStatus);
 
   // hoock di caricamento
   onMounted(() => {

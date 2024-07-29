@@ -27,16 +27,12 @@
     import { useRouter } from "vue-router";
 
     // i18n services imports
-    import { useI18n } from 'vue-i18n';
     import Tr from "@/i18n/translation";
 
     // components and primevue imports
     import CountryFlag from 'vue-country-flag-next';
     import { usePrimeVue } from "primevue/config";
     import { setLocale as setVeeValidateLocale } from '@vee-validate/i18n';
-
-    // dichiaro le variabili che mi servono per il multilingua
-    const { locale, t } = useI18n();
 
     // recupero il router
     const router = useRouter();
@@ -57,7 +53,7 @@
     }));
 
     // dichiaro la variabile per il modello della select
-    const selectedCountry = ref(supportedLocalesArray.value.find(singleLocale => singleLocale.locale == locale.value));
+    const selectedCountry = ref(supportedLocalesArray.value.find(singleLocale => singleLocale.locale == Tr.getPersistedLocale()));
 
     // funzione per cambiare la lingua
     const changeLocale = async () => {

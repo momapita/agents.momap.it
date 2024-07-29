@@ -32,37 +32,78 @@
                         
                         <!-- Caso in cui è un Dropdown -->
                         <template v-if="field?.type === 'dropdown'">
-                            <Select v-model="field.model" v-bind="field.bind" :placeholder="$t(`${tKey}.${field?.placeholder}`)" class="w-full" />
+                            <Select 
+                                v-model="field.model"
+                                v-bind="field.bind"
+                                :placeholder="$t(`${tKey}.${field?.placeholder}`)"
+                                class="w-full"
+                                :inputProps="{ autocomplete: true }"
+                            />
                         </template>
 
                         <!-- Caso in cui è una multiselect -->
                         <template v-else-if="field?.type === 'multiselect'">
-                            <MultiSelect v-model="field.model" v-bind="field.bind" :placeholder="$t(`${tKey}.${field?.placeholder}`)" class="w-full" />
+                            <MultiSelect 
+                                v-model="field.model"
+                                v-bind="field.bind"
+                                :placeholder="$t(`${tKey}.${field?.placeholder}`)"
+                                class="w-full"
+                                :inputProps="{ autocomplete: true }"
+                            />
                         </template>
 
                         <!-- Caso in cui è un Calendar -->
                         <template v-else-if="field?.type === 'calendar'">
-                            <Calendar v-model="field.model" v-bind="field.bind || {}" :placeholder="$t(`${tKey}.${field?.placeholder}`)" class="w-full" />
+                            <Calendar
+                                v-model="field.model"
+                                v-bind="field.bind || {}"
+                                :placeholder="$t(`${tKey}.${field?.placeholder}`)"
+                                class="w-full"
+                                :inputProps="{ autocomplete: true }"
+                            />
                         </template>
 
                         <!-- Caso in cui è un numero -->
                         <template v-else-if="field?.type === 'number'">
-                            <InputNumber v-model="field.model" v-bind="field.bind || {}" :placeholder="$t(`${tKey}.${field?.placeholder}`)" class="w-full" />
+                            <InputNumber 
+                                v-model="field.model"
+                                v-bind="field.bind || {}"
+                                :placeholder="$t(`${tKey}.${field?.placeholder}`)"
+                                class="w-full"
+                                :inputProps="{ autocomplete: true }"
+                            />
                         </template>
 
                         <!-- Caso in cui è un toggle -->
                         <template v-else-if="field?.type === 'toggle'">
-                            <ToggleButton v-model="field.model" v-bind="field.bind || {}" class="w-full" />
+                            <ToggleButton 
+                                v-model="field.model" 
+                                v-bind="field.bind || {}"
+                                class="w-full"
+                                :inputProps="{ autocomplete: true }"
+                            />
                         </template>
 
                         <!-- Caso in cui è un textarea -->
                         <template v-else-if="field?.type === 'textarea'">
-                            <Textarea v-model="field.model" v-bind="field.bind || {}" :placeholder="$t(`${tKey}.${field?.placeholder}`)" class="w-full" />
+                            <Textarea 
+                                v-model="field.model"
+                                v-bind="field.bind || {}"
+                                :placeholder="$t(`${tKey}.${field?.placeholder}`)"
+                                class="w-full"
+                                :inputProps="{ autocomplete: true }"
+                            />
                         </template>
 
                         <!-- Caso in cui è una password -->
                         <template v-else-if="field?.type === 'password'">
-                            <Password v-model="field.model" v-bind="field.bind || {}" :placeholder="$t(`${tKey}.${field?.placeholder}`)" class="w-full" />
+                            <Password 
+                                v-model="field.model" 
+                                v-bind="field.bind || {}" 
+                                :placeholder="$t(`${tKey}.${field?.placeholder}`)"
+                                :inputProps="{ autocomplete: true }"
+                                class="w-full"
+                            />
                         </template>
 
                         <!-- Caso di default (input txt) -->

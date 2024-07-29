@@ -28,13 +28,12 @@
 
     // base imports
     import { ref, inject } from 'vue';
-    import { useI18n } from "vue-i18n";
 
     // error handler import
     import { executeFormWithGlobalErrorHandling } from '@/helpers/errorHandler';
 
-    // definisco la lingua
-    const { t } = useI18n();
+    // store imports
+    import { useAuthStore } from '@/stores/auth.js';
 
     // import http service
     const HttpService = inject('HttpService');
@@ -74,10 +73,23 @@
         }
     });
 
-
     const onSubmit = executeFormWithGlobalErrorHandling(async (values) => {
+
+        // effettuo la chiamata
         const response = await HttpService.post('login', values?.event);
-        console.log(response);
+
+        // controllo che response?.data sia un tipo stringa
+        if (typeof response?.data !== 'string') {
+            throw new Error('Invalid response.data');
+        }
+
+        // setto il token
+        useAuthStore().setToken(response?.data);
+
+        // recupero i dati dell'utente
+        const userData = useAuthStore().getUser;
+
+        console.log(userData);
     });
 
 </script>
