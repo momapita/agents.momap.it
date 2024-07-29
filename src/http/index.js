@@ -1,5 +1,9 @@
+// based imports and stores
+import { computed } from 'vue';
+import { useAuthStore } from '@/stores/auth.js';
+
+// imports axios
 import axios from 'axios';
-//import { useAuthStore } from '@/stores/auth.js';
 
 class ApiService {
 
@@ -10,10 +14,9 @@ class ApiService {
       timeout: 25000
     });
 
-    /*// Interceptor per aggiungere il token JWT
+    // Interceptor per aggiungere il token JWT
     this.api.interceptors.request.use(config => {
-      const authStore = useAuthStore();
-      const token = authStore.token;
+      const token = computed(() => useAuthStore().getToken)?.value;
 
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;
@@ -22,7 +25,7 @@ class ApiService {
       return config;
     }, error => {
       return Promise.reject(error);
-    });*/
+    });
 
   }
 

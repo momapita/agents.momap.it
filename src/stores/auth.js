@@ -32,7 +32,7 @@ export const useAuthStore = defineStore('auth', {
 
         removeToken() {
             this.token = null;
-            Cookies.get('jwt') && Cookies.remove('jwt', { domain: import.meta.env.VITE_BASE_URL_COOKIES, });
+            Cookies.get('jwt', { domain: import.meta.env.VITE_BASE_URL_COOKIES }) && Cookies.remove('jwt', { domain: import.meta.env.VITE_BASE_URL_COOKIES, });
         }
     },
 

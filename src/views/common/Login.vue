@@ -28,15 +28,20 @@
 
     // base imports
     import { ref, inject } from 'vue';
+    import { useRouter } from "vue-router";
 
-    // error handler import
+    // error handler import and services
     import { executeFormWithGlobalErrorHandling } from '@/helpers/errorHandler';
+    import Cookies from 'js-cookie';
 
     // store imports
     import { useAuthStore } from '@/stores/auth.js';
 
     // import http service
     const HttpService = inject('HttpService');
+
+    // definisco il router
+    const router = useRouter();
 
     // definisco la variabile per il caps lock e la funzione per controllarlo
     const capsLockOn = ref(false);
@@ -86,10 +91,13 @@
         // setto il token
         useAuthStore().setToken(response?.data);
 
-        // recupero i dati dell'utente
-        const userData = useAuthStore().getUser;
+        // controllo se è stato salvato il token nel cookie
+        if (!Cookies.get('jwt', { domain: import.meta.env.VITE_BASE_URL_COOKIES })) {
+            throw new Error('Token non salvato nel cookie');
+        }
 
-        console.log(userData);
+        // reindirizzo l'utente
+        router.push("/");
     });
 
 </script>

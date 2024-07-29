@@ -1,110 +1,112 @@
 
-/*// Funzione che controlla se esistono i permessi
-export const existsPermission = () => {
-    try {
-        
-        // recupero il token jwt
-        const jwtToken = Cookies.get('jwt_token', { domain: import.meta.env.VITE_BASE_URL_COOKIES });
+// Imports based on middleware
+import { computed } from 'vue';
+import { jwtDecode } from 'jwt-decode';
+import Cookies from 'js-cookie';
 
-        if(!jwtToken){
-            throw new Error('Token non definito');
+// store imports
+import { useAuthStore } from '@/stores/auth.js';
+
+class Permissions {
+
+    constructor() {
+        this.roleHierarchy = {
+            customer: 1,
+            installer: 2,
+            agent: 3,
+            master_agent: 4,
+            admin: 5
         }
-
-        const decoded = jwtDecode(jwtToken);
-        const privileges = JSON.parse(decoded.privileges);
-
-        if(!privileges) {
-            throw new Error('Privilegi non definiti');
-        }
-        
-        return privileges;
-
-    } catch (error) {
-        return {};
     }
+
+    #getTypeUser(){
+        try {
+            
+            // recupero il token jwt
+            const jwtToken = Cookies.get('jwt', { domain: import.meta.env.VITE_BASE_URL_COOKIES }) || null;
+
+            if(!jwtToken){
+                throw new Error('Token non valido');
+            }
+
+            const jwtData = jwtDecode(jwtToken);
+
+            if(!jwtData || Object.keys(jwtData).length === 0 || !('user_type' in jwtData) || !jwtData.user_type){
+                throw new Error('Jwt Data non valida');
+            }
+
+            // controllo se lo user_type sia presente nella gerarchia di ruoli
+            if(!this.roleHierarchy[jwtData.user_type]){
+                throw new Error('Tipo non presente');
+            }
+
+            return jwtData?.user_type;
+
+        } catch (error) {
+            import.meta.env.VITE_DEVELOPMENT && console.error(error);
+            return null;
+        }
+    }
+
+    hasPermission(requiredRole) {
+        try {
+            
+            // recupero il permesso dell'utente
+            const userRole = this.#getTypeUser();
+
+            if(!userRole){
+                throw new Error('Ruolo Utente non trovato o non valido');
+            }
+
+            if(!requiredRole || typeof requiredRole !== 'number'){
+                throw new Error('Required Role non valido');
+            }
+
+            return this.roleHierarchy[userRole] >= requiredRole;
+
+        } catch (error) {
+            import.meta.env.VITE_DEVELOPMENT && console.error(error);
+            return false;
+        }
+    }
+
+    handleRoute(to, from, next) {
+
+        // recupero lo stato dell'utente
+        const isLoggedIn = computed(() => useAuthStore().getAuthStatus)?.value;
+
+        if (to.meta.requiresAuth) {
+
+            // verifico che l'utente sia loggato
+            if(!isLoggedIn){
+                next({ name: 'login' });
+            } else {
+
+                // verifico se la pagina ha bisogno di permessi aggiuntivi all'autenticazione
+                if (to.meta.requiredRole && !this.hasPermission(to.meta.requiredRole)) {
+                    return next({ name: 'home' });
+                } else {
+                    next();
+                }
+
+            }
+
+        } else {
+
+            // verifico se l'utente è loggato ma sta sulla pagina login o recupero password
+            if (isLoggedIn && (to.name === 'login' || to.name === 'recoverPassword')) {
+                next({ name: 'home' });
+            } else {
+                next();
+            }
+        }
+    }
+
+    getRoleHierarchy() {
+        return this.roleHierarchy;
+    }
+
 }
 
-// Funzione che controlla se l'utente ha i permessi
-export const checkExistsPermission = (permission) => {
-    try {
-
-        const privileges = existsPermission();
-
-        if(!privileges) {
-            throw new Error('Privilegi non definiti');
-        }
-
-        // controllo se l'utente è un subuser
-        const conditionSubuser = privileges['type'] == 'subuser';
-
-        // splitto permission sul .
-        const permissions = permission.split('.') ?? [];
-
-        // accedo ricorsivamente alle chiavi 
-        const test123 = permissions.reduce((current, key) => {
-            return current ? current[key] : undefined;
-        }, privileges);
-
-        const exist = permission == 'type' ? !conditionSubuser : test123 ? true : false;
-
-        const existPermission = typeof exist == 'string' ? exist == 'true' : exist;
-
-        return existPermission;
-
-    } catch (error) {
-        return false;
-    }
-}
-
-// Funzione che controlla se l'utente ha i permessi
-export const checkTypeUser = (type) => {
-    try {
-
-        const privileges = existsPermission();
-
-        if(!privileges) {
-            throw new Error('Privilegi non definiti');
-        }
-
-        const user_type = privileges.type ?? null;
-
-        if(!user_type) {
-            throw new Error('Tipo utente non definito');
-        }
-
-        return user_type == type;
-
-    } catch (error) {
-        return false;
-    }
-}
-
-// Funzione per controllare il check di benvenuto per fleet management
-const checkerWelcomeFleetManagement = async (to, next) => {
-    
-    // recupero il routing
-    const router = useRouter();
-
-    // setto lo store
-    await useWelcomeChecker().fetchChecker();
-    
-    // aspetto il fetch
-    Promise.resolve();
-
-    // verifico il check
-    const showWelcome = useWelcomeChecker().getCheckWelcome || null;
-
-    // verifico se il check è true
-    if(showWelcome.value === true && to.name != 'welcome' && showWelcome !== null) {
-        router.push(Tr.i18nRoute({ name: 'welcome' }));
-    } else if(showWelcome.value === false && to.name == 'welcome' && showWelcome !== null) {
-        router.push(Tr.i18nRoute({ name: 'fleetManagement' }));
-    } else {
-        next();
-    }
-}*/
-
-// Middleware
-export const authMiddleware = (to, from, next) => {
-    next();
-}
+const permissions = new Permissions();
+export default permissions;
