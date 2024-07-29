@@ -1,4 +1,5 @@
 <template>
+    <RouterLink to="/login">Users</RouterLink>
     <DataTableWrapper
         :pageName="'users'"
         :rows="15"
@@ -16,6 +17,7 @@
     
     import { ref } from 'vue';
     import TableServices from '@/helpers/table';
+    import { RouterLink } from 'vue-router';
 
     // definisco l'oggetto per la gestione del context menu
     const contextMenuSelection = ref({
