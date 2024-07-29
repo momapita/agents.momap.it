@@ -1,6 +1,5 @@
 // based imports router
-import { createRouter, createWebHistory, RouterView } from 'vue-router';
-import Tr from "@/i18n/translation";
+import { createRouter, createWebHistory } from 'vue-router';
 
 // first views import
 import HomeView from '@/views/Home.vue';
@@ -8,28 +7,22 @@ import HomeView from '@/views/Home.vue';
 const router = createRouter({
   history: createWebHistory(import.meta.env.VITE_BASE_URL),
   routes: [
+    
+    // Login
     {
-      path: "/:locale?",
-      component: RouterView,
-      beforeEnter: Tr.routeMiddleware,
-      children: [
-
-        // Login
-        {
-          path: 'login',
-          name: 'login',
-          component: () => import('@/views/Login.vue'),
-        },
-
-        // HomePage
-        {
-          path: '',
-          name: 'home',
-          component: HomeView 
-        }
-        
-      ]
+      path: '/login',
+      name: 'login',
+      component: () => import('@/views/Login.vue'),
     },
+
+    // HomePage
+    {
+      path: '',
+      name: 'home',
+      component: HomeView 
+    }, 
+
+    // NotFound
     {
       path: '/:pathMatch(.*)*',
       name: 'NotFound',

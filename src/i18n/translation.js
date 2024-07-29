@@ -26,8 +26,8 @@ const Trans = {
 
     // setto il resto
     Trans.currentLocale = newLocale
-    document.querySelector("html").setAttribute("lang", newLocale)
     localStorage.setItem("user-locale", newLocale);
+    document.querySelector("html").setAttribute("lang", newLocale)
   },
 
   async loadLocaleMessages(locale) {
@@ -77,7 +77,7 @@ const Trans = {
     if(Trans.isLocaleSupported(persistedLocale)) {
       return persistedLocale;
     } else {
-      return null
+      return 'it'
     }
   },
 
@@ -98,31 +98,8 @@ const Trans = {
     }
     
     return Trans.defaultLocale
-  },
-
-  async routeMiddleware(to, _from, next) {
-    const paramLocale = to.params.locale
-
-    if(!Trans.isLocaleSupported(paramLocale)) {
-      return next(Trans.guessDefaultLocale())
-    }
-
-    await Trans.switchLanguage(paramLocale)
-
-    return next()
-  },
-
-  i18nRoute(to) {
-    const name = to.name.split('/');
-    return {
-      name: name[0],
-      params: {
-        locale: Trans.currentLocale,
-        id: name[1],
-        ...to.params
-      }
-    };
   }
+
 }
 
 export default Trans
