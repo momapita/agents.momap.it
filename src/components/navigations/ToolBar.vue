@@ -4,16 +4,13 @@
         
         <template #start>
             <div class="flex items-center gap-2">
-                
-                <!-- Logo Azienda -->
-                <img :src="`//cdn.momap.it/branding/logos/${isDark ? 'logo' : 'logo_red'}.svg`" alt="MoMap" class="w-20 lg:w-28" lazy>
 
-                <!-- Voci del menu -->
-                <div class="hidden lg:inline-flex gap-2">
-                    <Button label="Files" text plain />
-                    <Button label="Edit" text plain />
-                    <Button label="View" text plain />
+                <!-- Titolo Pagina Corrente -->
+                <div class="font-semibold tracking-wider lg:text-lg">
+                    {{ $te(`headers.${route.name}.title`) ? $t(`headers.${route.name}.title`) : route.name }}
                 </div>
+
+                <img :src="`//cdn.momap.it/branding/logos/${isDark ? 'logo' : 'logo_red'}.svg`" alt="MoMap" class="w-20 lg:w-28 hidden lg:block" lazy>
 
             </div>
         </template>
@@ -33,17 +30,16 @@
 
     // services imports
     import { useDark } from '@vueuse/core';
+    import { useRoute } from 'vue-router';
 
     // components imports
     import ToggleTheme from '@/components/reusable/ToggleTheme.vue';
     import LanguageSwitcher from '@/components/reusable/LanguageSwitcher.vue';
 
-    // primevue imports
-    import Toolbar from 'primevue/toolbar';
-    import Button from 'primevue/button';
-    import Avatar from 'primevue/avatar';
-
     // dichiaro una variabile per il dark
     const isDark = useDark();
+
+    // dichiaro la route
+    const route = useRoute();
 
 </script>

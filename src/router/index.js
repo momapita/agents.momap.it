@@ -30,7 +30,7 @@ const router = createRouter({
       meta: { requiredRole: roleHierarchy.agent, requiresAuth: true }
     },
 
-    // HomePage
+    // testPermessi
     {
       path: '/testPermessi',
       name: 'testPermessi',
@@ -41,7 +41,7 @@ const router = createRouter({
     // NotFound
     {
       path: '/:pathMatch(.*)*',
-      name: 'NotFound',
+      name: 'notFound',
       component: () =>  import('@/views/common/404.vue'),
       meta: { requiresAuth: false }
     }
