@@ -179,4 +179,5 @@ export default {
     reload: "Reload",
     totals: "Totals",
     block_maiusc_active: "Block Maiusc Active",
+    logout: "Logout"
 };

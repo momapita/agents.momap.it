@@ -47,14 +47,15 @@
 
         <template #header>
             <div class="flex items-center gap-2">
-                <span class="material-symbols-outlined material-symbols-font-300 flex mr-2 items-center">account_circle</span>
+                
+                <Button  icon="pi pi-sign-out" class="flex-auto" severity="danger" v-tooltip.top="$t('general.logout')" @click="logout" text></Button>
                 <div class="flex flex-col justify-center">
                     <span class="font-light tracking-wider leading-none">{{ userData?.name }} {{ userData?.last_name }}</span>
                     <sub class="leading-none tracking-widest text-gray-400">{{ userData?.email }}</sub>
                 </div>
+                
             </div>
         </template>
-        
         <ul class="list-none p-1 m-0">
             <li v-for="item in items" :key="item.label">
                 <a
@@ -99,9 +100,12 @@
                 <label>Modalità </label>
                 <ToggleTheme />
             </div>
-            <div class="flex items-center gap-2">
-                <Button label="Logout" icon="pi pi-sign-out" class="flex-auto" severity="danger" text></Button>
+            <div class="flex  items-center gap-2">
+                 
             </div>
+            <div class="flex items-center gap-2">
+                <img  :src="`//cdn.momap.it/branding/logos/${isDark ? 'logo' : 'logo_red'}.svg`" alt="MoMap" class="opacity-50 w-28 py-1.5 mx-auto" lazy>
+               </div>
         </template>
 
     </Drawer>

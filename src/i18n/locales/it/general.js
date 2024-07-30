@@ -176,4 +176,5 @@ export default {
     reload: "Ricarica",
     totals: "Totali",
     block_maiusc_active: "Blocca Maiuscole attivo",
+    logout: "Esci"
 }
