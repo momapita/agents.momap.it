@@ -14,8 +14,11 @@
 
 <script setup>
     
-    import { ref } from 'vue';
+    import { onMounted, ref } from 'vue';
     import TableServices from '@/helpers/table';
+
+    // store imports
+    import { useAreasStore } from '@/stores/areas.js';
 
     // definisco l'oggetto per la gestione del context menu
     const contextMenuSelection = ref({
@@ -53,5 +56,18 @@
     const colsFormat = [
         ...TableServices.formatterBaseCols(['us__name', 'us__last_name'], 12)
     ]
+
+    onMounted(async () => {
+
+        await useAreasStore().setAreas();
+
+        /*console.log("getGeographicalAreas", useAreasStore().getGeographicalAreas);
+        console.log("regions by area", useAreasStore().getRegionsByAreaId(2));
+        console.log("provinces by regions", useAreasStore().getProvincesByRegionIds([1, 4, 12, 20]));*/
+        console.log("Municipalities by provinces", useAreasStore().getMunicipalitiesByProvinceIds(Array.from({ length: 111 }, (_, index) => index)));
+
+
+        //getProvincesByRegionIds
+    });
 
 </script>

@@ -92,7 +92,6 @@
     // services imports
     import { useDark } from '@vueuse/core';
     import { useRoute } from 'vue-router';
-    import { Slide } from 'vue3-burger-menu' 
     // components imports
     import ToggleTheme from '@/components/reusable/ToggleTheme.vue';
     import LanguageSwitcher from '@/components/reusable/LanguageSwitcher.vue';
