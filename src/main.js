@@ -7,6 +7,7 @@ import i18n from "./i18n";
 
 // import per pinia e il persist date
 import { createPinia } from 'pinia';
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
 
 // import per vee validate e formGenerator
 import { Field, Form, ErrorMessage } from 'vee-validate';
@@ -49,7 +50,9 @@ import canDirective from '@/directives/can';
 const app = createApp(App);
 
 // Use Pinia
-app.use(createPinia());
+const pinia = createPinia();
+pinia.use(piniaPluginPersistedstate)
+app.use(pinia);
 
 // Gestione del multilingua
 app.use(i18n);

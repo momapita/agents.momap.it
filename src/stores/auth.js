@@ -46,6 +46,26 @@ export const useAuthStore = defineStore('auth', {
 
         getUserType: (state) => state?.user ? state?.user?.user_type || null : null
 
+    },
+    persist: {
+        key: 'auth',
+        storage: window.localStorage,
+        paths: ['user.name', 'user.last_name', 'user.email'],
+        serialize: (state) => {
+            return {
+                token: state.token,
+                user: state.user ? {
+                    name: state.user.name,
+                    last_name: state.user.last_name,
+                    email: state.user.email
+                } : null
+            };
+        },
+        deserialize: (storedState) => {
+            return {
+                token: storedState.token || null,
+                user: storedState.user || null
+            };
+        }
     }
-
 });

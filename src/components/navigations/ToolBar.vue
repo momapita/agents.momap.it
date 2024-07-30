@@ -1,41 +1,60 @@
 
 <template>
-    <Toolbar class="!py-1 lg:!py-2 w-full !px-6 !rounded-none sticky top-0 mx-auto z-50 transition-all">
+    
+    <Toolbar class=" w-full !px-6 !rounded-none sticky top-0 mx-auto z-50 transition-all">
         
         <template #start>
-           
-            <Button class="!bg-transparent !border-none !text-surface-500 dark:!text-white" icon="pi pi-bars" @click="visible = true" />
 
+            <!-- utente loggato -->
+            <template v-if="isLoggedIn">
+                <Button class="!bg-transparent !border-none !text-surface-500 dark:!text-white" icon="pi pi-bars" @click="visible = true" />
+            </template>
+
+            <!-- utente non loggato -->
+            <template v-else>
+                <img :src="`//cdn.momap.it/branding/logos/${isDark ? 'logo' : 'logo_red'}.svg`" alt="MoMap" class="w-20 lg:w-24 py-1.5" lazy>
+            </template>
+        
         </template>
+
         <template #center>
-            <div class="flex items-center 2">
+            <div class="flex items-center 2" v-if="isLoggedIn">
                 <img v-if="isMobile" :src="`//cdn.momap.it/branding/logos/logo_red_icon.png`" alt="MoMap" class="mx-4 w-8  block" lazy>
-                <img v-else :src="`//cdn.momap.it/branding/logos/${isDark ? 'logo' : 'logo_red'}.svg`" alt="MoMap" class=" w-28 py-3 hidden lg:block" lazy>
+                <img v-else :src="`//cdn.momap.it/branding/logos/${isDark ? 'logo' : 'logo_red'}.svg`" alt="MoMap" class=" w-28 py-1.5 hidden lg:block" lazy>
             </div>
         </template>
 
         <template #end>
-           
-            <div class="flex items-center justify-center flex-1">
+            <div class="flex items-center justify-center flex-1 gap-4">
                  
-                 <div class="font-semibold tracking-wider lg:text-lg">
-                     {{ $te(`headers.${route.name}.title`) ? $t(`headers.${route.name}.title`) : route.name }}
-                 </div>
+                <!-- titolo di pagina -->
+                <div class="font-semibold tracking-wider lg:text-lg" v-if="isLoggedIn">
+                    {{ $te(`headers.${route.name}.title`) ? $t(`headers.${route.name}.title`) : route.name }}
+                </div>
+
+                <!-- cambio lingua -->
+                <template v-if="!isLoggedIn">
+                    <LanguageSwitcher />
+                    <ToggleTheme />
+                </template>
+
              </div>
         </template>
 
     </Toolbar>
 
-    <Drawer v-model:visible="visible">
+    <Drawer v-model:visible="visible" v-if="isLoggedIn">
+
         <template #header>
             <div class="flex items-center gap-2">
                 <span class="material-symbols-outlined material-symbols-font-300 flex mr-2 items-center">account_circle</span>
                 <div class="flex flex-col justify-center">
-                    <span class="font-light tracking-wider leading-none">Admin Root</span>
-                    <sub class="leading-none tracking-widest text-gray-400">admin@admin.it</sub>
+                    <span class="font-light tracking-wider leading-none">{{ userData?.name }} {{ userData?.last_name }}</span>
+                    <sub class="leading-none tracking-widest text-gray-400">{{ userData?.email }}</sub>
                 </div>
             </div>
         </template>
+        
         <ul class="list-none p-1 m-0">
             <li v-for="item in items" :key="item.label">
                 <a
@@ -70,6 +89,7 @@
                 </transition>
             </li>
         </ul>
+
         <template #footer>
             <div class="flex items-center mb-3 justify-between gap-2">
                 <label>Lingua </label>
@@ -83,18 +103,23 @@
                 <Button label="Logout" icon="pi pi-sign-out" class="flex-auto" severity="danger" text></Button>
             </div>
         </template>
-    </Drawer>
 
+    </Drawer>
 
 </template>
 
 <script setup>
 
+    // based imports
+    import { ref, computed } from "vue";
+    import { useRoute } from 'vue-router';
+
     // services imports
     import { useDark } from '@vueuse/core';
-    import { useRoute } from 'vue-router';
-    
     import { isMobile } from 'mobile-device-detect';
+
+    // store imports
+    import { useAuthStore } from '@/stores/auth.js';
     
     // components imports
     import ToggleTheme from '@/components/reusable/ToggleTheme.vue';
@@ -105,17 +130,13 @@
 
     // dichiaro la route
     const route = useRoute();
-    import { ref } from "vue";
-    //ottengo il path corrente
     const routeName = ref(route.name);
-    const showMenu = ref(false);
 
-    function toggle(item) {
-        if (item.items) {
-            item.expanded = !item.expanded;
-        }
-    }
+    // dichiaro una variabile statica per i test di login
+    const isLoggedIn = computed(() => useAuthStore().getAuthStatus);
+    const userData = computed(() => useAuthStore().getUser);
 
+    // definisco gli oggetti per la sidebar
     const visible = ref(false);
     const items = ref([
         {
@@ -144,16 +165,24 @@
 
         }
     ]);
+
+    // funzione per il toggle
+    function toggle(item) {
+        if (item.items) {
+            item.expanded = !item.expanded;
+        }
+    }
+
 </script>
 
 <style scoped>
-.fade-enter-active, .fade-leave-active {
-  transition: opacity 0.5s;
-}
-.fade-enter-from, .fade-leave-to {
-  opacity: 0;
-}
-.fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
-    opacity: 0;
-}
+    .fade-enter-active, .fade-leave-active {
+        transition: opacity 0.5s;
+    }
+    .fade-enter-from, .fade-leave-to {
+        opacity: 0;
+    }
+    .fade-enter, .fade-leave-to {
+        opacity: 0;
+    }
 </style>

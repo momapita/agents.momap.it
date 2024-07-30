@@ -19,6 +19,7 @@
 
             <!-- Form -->
             <FormGenerator :fields="formModel" :tKey="'forms'" class="w-full" :btnSave="{ label: 'general.login' }" @submit="onSubmit" />
+
         </div>
 
     </WrapperLayout>
