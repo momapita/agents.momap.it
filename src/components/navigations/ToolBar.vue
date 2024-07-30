@@ -1,90 +1,91 @@
 
 <template>
-    <!--<Toolbar class="!py-1 lg:!py-2 w-full !px-6 !rounded-none sticky top-0 mx-auto z-50 transition-all">
+    <Toolbar class="!py-1 lg:!py-2 w-full !px-6 !rounded-none sticky top-0 mx-auto z-50 transition-all">
         
         <template #start>
-            <div class="flex items-center gap-2">
-                 Titolo Pagina Corrente 
-                <div class="font-semibold tracking-wider lg:text-lg">
-                    {{ $te(`headers.${route.name}.title`) ? $t(`headers.${route.name}.title`) : route.name }}
-                </div>
+           
+            <Button class="!bg-transparent !border-none !text-surface-500 dark:!text-white" icon="pi pi-bars" @click="visible = true" />
 
-            </div>
         </template>
         <template #center>
-            
+            <div class="flex items-center 2">
+                <img v-if="isMobile" :src="`//cdn.momap.it/branding/logos/logo_red_icon.png`" alt="MoMap" class="mx-4 w-8  block" lazy>
+                <img v-else :src="`//cdn.momap.it/branding/logos/${isDark ? 'logo' : 'logo_red'}.svg`" alt="MoMap" class=" w-28 py-3 hidden lg:block" lazy>
+            </div>
         </template>
 
         <template #end>
-            <div class="flex items-center gap-2">
-                <ToggleTheme />
-                <LanguageSwitcher />
-                <Avatar image="https://primefaces.org/cdn/primevue/images/avatar/amyelsner.png" class="w-8 h-8" />
-            </div>
+           
+            <div class="flex items-center justify-center flex-1">
+                 
+                 <div class="font-semibold tracking-wider lg:text-lg">
+                     {{ $te(`headers.${route.name}.title`) ? $t(`headers.${route.name}.title`) : route.name }}
+                 </div>
+             </div>
         </template>
 
-    </Toolbar>-->
-    
-    <MegaMenu :model="items" class="p-4 bg-surface-0" >
-            <template #start>
-                    <img :src="`//cdn.momap.it/branding/logos/logo_red_icon.png`" alt="MoMap" class="mx-4 w-10 hidden lg:block" lazy>
-            </template>
-            <template #item="{ item }">
-                <a v-if="item.root" :class="{ 'text-momap font-semibold p-0' : item.name != routeName }" class="flex items-center cursor-pointer px-4 py-2 overflow-hidden relative  text-lg" style="border-radius: 2rem">
-                    <span class="material-symbols-outlined material-symbols-font-300">{{ item.icon }}</span>
+    </Toolbar>
 
-                    <span  class="ml-2 mt-1 tracking-wider ">{{ item.label }}</span>
-                </a>
-                <a v-else-if="!item.image" class="flex items-center p-4 cursor-pointer mb-2 gap-3">
-                    <span class="inline-flex items-center justify-center rounded-full bg-primary text-primary-contrast w-12 h-12">
-                        <i :class="[item.icon, 'text-lg']"></i>
+    <Drawer v-model:visible="visible">
+        <template #header>
+            <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined material-symbols-font-300 flex mr-2 items-center">account_circle</span>
+                <div class="flex flex-col justify-center">
+                    <span class="font-light tracking-wider leading-none">Admin Root</span>
+                    <sub class="leading-none tracking-widest text-gray-400">admin@admin.it</sub>
+                </div>
+            </div>
+        </template>
+        <ul class="list-none p-1 m-0">
+            <li v-for="item in items" :key="item.label">
+                <a
+                    class="flex items-center cursor-pointer p-4 rounded text-surface-700 hover:bg-surface-100 dark:text-surface-0 dark:hover:bg-surface-800 duration-150 transition-colors p-ripple"
+                    @click="toggle(item)"
+                >
+                    <span :class="item.color" class="mr-3 material-symbols-outlined material-symbols-font-300">
+                        {{ item.icon }}
                     </span>
-                    <span class="inline-flex flex-col gap-1">
-                        <span class="font-bold text-lg">{{ item.label }}</span>
-                        <span class="whitespace-nowrap">{{ item.subtext }}</span>
+                    <span :class="routeName === item.name ? 'font-bold' : ''" class="font-light text-surface-700 dark:text-white tracking-wider">
+                        {{ item.label }}
+                    </span>
+                    <span v-if="item.items" class="ml-auto material-symbols-outlined text-surface-700 dark:text-white">
+                        {{ item.expanded ? 'expand_less' : 'expand_more' }}
                     </span>
                 </a>
-                <div v-else class="flex flex-col items-start gap-4 p-2">
-                    <img alt="megamenu-demo" :src="item.image" class="w-full" />
-                    <span>{{ item.subtext }}</span>
-                    <Button :label="item.label" outlined />
-                </div>
-            </template>
-            <template #end>
-                <div class="flex items-center flex-row gap-2">
-                <div class="font-semibold tracking-widest lg:text-lg">
-                    {{ $te(`headers.${route.name}.title`) ? $t(`headers.${route.name}.title`) : route.name }}
-                </div>
-                <div class="relative inline-block">
-                    <Avatar 
-                    image="https://primefaces.org/cdn/primevue/images/avatar/amyelsner.png" 
-                    class="w-8 h-8 cursor-pointer" 
-                    @mouseover="showMenu = true" 
-                    @mouseleave="showMenu = false" 
-                    @click="toggleMenu"
-                    />
-                    <transition name="fade">
-                        <div 
-                            v-if="showMenu" 
-                            :class="isDark  ? 'bg-surface-800 border-surface-700' : 'bg-surface-50 border-surface-300' "
-                            class="absolute top-10 right-0 w-56 z-10 border  rounded shadow-md p-4 gap-4 flex flex-col"
-                            @mouseover="showMenu = true" 
-                            @mouseleave="showMenu = false"
-                        >
-                            <div class="flex items-center justify-between gap-2">
-                                <label>Mode: </label>
-                                <ToggleTheme />
-                            </div>
-                            <div class="flex items-center justify-between gap-2">
-                                <label>Lang: </label>
-                                <LanguageSwitcher />
-                            </div>
-                        </div>
-                    </transition>
-                </div>
-                </div>
-            </template>
-        </MegaMenu>
+                <transition name="fade">
+                    <ul v-if="item.items && item.expanded" class="pl-8">
+                        <li v-for="subItem in item.items" :key="subItem.label">
+                            <a
+                                class="flex items-center cursor-pointer p-4 rounded text-surface-700 hover:bg-surface-100 dark:text-surface-0 dark:hover:bg-surface-800 duration-150 transition-colors p-ripple"
+                            >
+                                <span :class="subItem.color" class="mr-3 material-symbols-outlined material-symbols-font-300">
+                                    {{ subItem.icon }}
+                                </span>
+                                <span class="font-medium text-surface-700 dark:text-white tracking-wider">
+                                    {{ subItem.label }}
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </transition>
+            </li>
+        </ul>
+        <template #footer>
+            <div class="flex items-center mb-3 justify-between gap-2">
+                <label>Lingua </label>
+                <LanguageSwitcher />
+            </div>
+            <div class="flex items-center mb-6 justify-between gap-2">
+                <label>Modalità </label>
+                <ToggleTheme />
+            </div>
+            <div class="flex items-center gap-2">
+                <Button label="Logout" icon="pi pi-sign-out" class="flex-auto" severity="danger" text></Button>
+            </div>
+        </template>
+    </Drawer>
+
+
 </template>
 
 <script setup>
@@ -92,7 +93,9 @@
     // services imports
     import { useDark } from '@vueuse/core';
     import { useRoute } from 'vue-router';
-    import { Slide } from 'vue3-burger-menu' 
+    
+    import { isMobile } from 'mobile-device-detect';
+    
     // components imports
     import ToggleTheme from '@/components/reusable/ToggleTheme.vue';
     import LanguageSwitcher from '@/components/reusable/LanguageSwitcher.vue';
@@ -107,35 +110,50 @@
     const routeName = ref(route.name);
     const showMenu = ref(false);
 
-    const toggleMenu = () => {
-    showMenu.value = !showMenu.value;
-    };
+    function toggle(item) {
+        if (item.items) {
+            item.expanded = !item.expanded;
+        }
+    }
+
+    const visible = ref(false);
     const items = ref([
         {
             label: 'Home',
-            root: true,
             icon: 'home',
-            name: 'home'
-        
+            name: 'home',
+            color: 'text-green-500'
         },
         {
             label: 'Ordini',
             icon: 'mintmark',
-            root: true
+            color: 'text-purple-500',
+            items: [
+                {
+                    label: 'I tuoi ordini',
+                    icon: 'dashboard',
+                    name: 'orders',
+                    color: 'text-purple-500'
+                }
+            ]
         },
         {
             label: 'Clienti',
             icon: 'group',
-            root: true
+            color: 'text-orange-500'
+
         }
     ]);
 </script>
 
-<style>
+<style scoped>
 .fade-enter-active, .fade-leave-active {
   transition: opacity 0.5s;
 }
 .fade-enter-from, .fade-leave-to {
   opacity: 0;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
+    opacity: 0;
 }
 </style>
