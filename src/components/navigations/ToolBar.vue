@@ -1,41 +1,42 @@
 
 <template>
-    
-    <Toolbar class=" w-full !px-6 !rounded-none sticky top-0 mx-auto z-50 transition-all">
+
+    <Toolbar class="w-full !py-4 !px-3 lg:!px-6 !rounded-none sticky top-0 mx-auto z-50 transition-all">
         
         <template #start>
 
             <!-- utente loggato -->
             <template v-if="isLoggedIn">
-                <Button class="!bg-transparent !border-none !text-surface-500 dark:!text-white" icon="pi pi-bars" @click="visible = true" />
+                <span class="material-symbols-outlined material-symbols-font-300 cursor-pointer" @click="visible = true"> menu </span>
+                <div class="font-semibold tracking-wider lg:text-lg ml-2 lg:ml-4">
+                    {{ $te(`headers.${route.name}.title`) ? $t(`headers.${route.name}.title`) : route.name }}
+                </div>
             </template>
 
             <!-- utente non loggato -->
             <template v-else>
-                <img :src="`//cdn.momap.it/branding/logos/${isDark ? 'logo' : 'logo_red'}.svg`" alt="MoMap" class="w-20 lg:w-24 py-1.5" lazy>
+                <img :src="`//cdn.momap.it/branding/logos/${isDark ? 'logo' : 'logo_red'}.svg`" alt="MoMap" class="w-20 lg:w-24" lazy>
             </template>
         
         </template>
 
         <template #center>
-            <div class="flex items-center 2" v-if="isLoggedIn">
-                <img v-if="isMobile" :src="`//cdn.momap.it/branding/logos/logo_red_icon.png`" alt="MoMap" class="mx-4 w-8  block" lazy>
-                <img v-else :src="`//cdn.momap.it/branding/logos/${isDark ? 'logo' : 'logo_red'}.svg`" alt="MoMap" class=" w-28 py-1.5 hidden lg:block" lazy>
+            <div v-if="isLoggedIn" class="hidden lg:block">
+                <BottomNavigation />
             </div>
         </template>
 
         <template #end>
             <div class="flex items-center justify-center flex-1 gap-4">
-                 
-                <!-- titolo di pagina -->
-                <div class="font-semibold tracking-wider lg:text-lg" v-if="isLoggedIn">
-                    {{ $te(`headers.${route.name}.title`) ? $t(`headers.${route.name}.title`) : route.name }}
+
+                <div v-if="isLoggedIn">
+                    <img :src="`//cdn.momap.it/branding/logos/${isDark ? 'logo' : 'logo_red'}.svg`" alt="MoMap" class= "w-20 lg:w-24" lazy>
                 </div>
 
                 <!-- cambio lingua -->
                 <template v-if="!isLoggedIn">
                     <LanguageSwitcher />
-                    <ToggleTheme />
+                    <ToggleTheme :size="'xs'" />
                 </template>
 
              </div>
@@ -128,6 +129,7 @@
     // components imports
     import ToggleTheme from '@/components/reusable/ToggleTheme.vue';
     import LanguageSwitcher from '@/components/reusable/LanguageSwitcher.vue';
+    import BottomNavigation from '@/components/navigations/BottomNavigation.vue';
 
     // dichiaro una variabile per il dark
     const isDark = useDark();
