@@ -42,6 +42,9 @@ import DialogBus from '@/services/globalDialogBus';
 // Import del tooltip
 import Tooltip from 'primevue/tooltip';
 
+// Directives imports
+import canDirective from '@/directives/can';
+
 // Create App
 const app = createApp(App);
 
@@ -75,8 +78,9 @@ app.use(PrimeVue, {
     }
 });
 
-// Use Wrapper Layout
+// Use Wrapper and DataTable Wrapper
 app.component('WrapperLayout', Wrapper);
+app.component('DataTableWrapper', DataTableWrapper);
 
 // Use primevue Services
 app.use(ToastService);
@@ -95,7 +99,8 @@ app.provide('dialogBus', DialogBus);
 // Setto globalmente l'HttpService
 app.provide('HttpService', HttpService);
 
-app.component('DataTableWrapper', DataTableWrapper);
+// Use can directive
+app.directive('can', canDirective);
 
 // Mount App
 app.mount('#app')

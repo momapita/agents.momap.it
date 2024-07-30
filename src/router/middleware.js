@@ -48,6 +48,15 @@ class Permissions {
         }
     }
 
+    #getRoleValue(role) {
+        if (typeof role === 'number') {
+            return role;
+        } else if (typeof role === 'string') {
+            return this.roleHierarchy[role];
+        }
+        return null;
+    }
+
     hasPermission(requiredRole) {
         try {
             
@@ -58,11 +67,13 @@ class Permissions {
                 throw new Error('Ruolo Utente non trovato o non valido');
             }
 
-            if(!requiredRole || typeof requiredRole !== 'number'){
+            const requiredRoleValue = this.#getRoleValue(requiredRole) || null;
+
+            if(!requiredRoleValue){
                 throw new Error('Required Role non valido');
             }
 
-            return this.roleHierarchy[userRole] >= requiredRole;
+            return this.roleHierarchy[userRole] >= requiredRoleValue;
 
         } catch (error) {
             import.meta.env.VITE_DEVELOPMENT && console.error(error);
