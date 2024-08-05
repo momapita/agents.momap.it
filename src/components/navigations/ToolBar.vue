@@ -71,7 +71,7 @@
 
         <!-- Template body -->
         <section name="body" class="overflow-y-auto max-h-full" v-if="items && Array.isArray(items) && items.length > 0">
-            <ul class="overflow-y-auto max-h-full space-y-3">
+            <ul class="overflow-y-auto max-h-full space-y-6 lg:space-y-8">
                 <template v-for="(item, index) in items" :key="index">
 
                     <!-- Controllo se esistono figli ad item -->
@@ -79,12 +79,30 @@
                         
                         <!-- sezione per apertura/chiusura del menu a discesa -->
                         <li>
+                            
                             <div 
                                 v-ripple
-                                class="py-3 flex items-center justify-between text-surface-600 dark:text-surface-300 cursor-pointer p-ripple" 
+                                class="py-2 flex items-center justify-between cursor-pointer p-ripple" 
                                 @click="toggleSection(item)"
+                                :class="item?.class || ''"
                             >
-                                <span class="font-medium" v-if="item?.label">{{ item?.label }}</span>
+                            
+                                <!-- Icona e Label -->
+                                <div class="pl-1 inline-flex gap-2 items-center justify-start">
+                                    
+                                    <!-- Icona -->
+                                    <span v-if="item?.icon" :class="item?.class || ''" class="pr-3 material-symbols-outlined material-symbols-font-300">
+                                        {{ item?.icon }}
+                                    </span>
+
+                                    <!-- Label -->
+                                    <span class="font-light tracking-wider" v-if="item?.label">
+                                        {{ $te(`headers.${item?.label}.title`) ? $t(`headers.${item?.label}.title`) : item?.label }}
+                                    </span>
+
+                                </div>
+
+                                <!-- Icona per apertura/chiusura -->
                                 <span class="material-symbols-outlined"> {{ item?.expanded ? 'expand_less' : 'expand_more' }} </span>
                             </div>
 
@@ -98,15 +116,21 @@
                                         :to="subItem?.name"
                                         class="duration-150 transition-colors p-ripple"
                                     >
+                                        
                                         <!-- Icona -->
                                         <span v-if="subItem?.icon" :class="subItem?.class || ''" class="material-symbols-outlined material-symbols-font-300">
                                             {{ subItem.icon }}
                                         </span>
+
                                         <!-- Label -->
-                                        <span class="font-light tracking-wider" v-if="subItem?.label"> {{ subItem?.label }} </span>
+                                        <span class="font-light tracking-wider" v-if="subItem?.label">
+                                            {{ $te(`headers.${subItem?.label}.title`) ? $t(`headers.${subItem?.label}.title`) : subItem?.label }}
+                                        </span>
+
                                     </AppLink>
                                 </ul>
                             </transition>
+                        
                         </li>
 
                     </template>
@@ -118,13 +142,18 @@
                                 v-ripple
                                 :to="item?.name"
                                 class="duration-150 transition-colors p-ripple"
+                                :class="item?.class || ''"
                             >
                                 <!-- Icona -->
                                 <span v-if="item?.icon" :class="item?.class || ''" class="mr-3 material-symbols-outlined material-symbols-font-300">
                                     {{ item?.icon }}
                                 </span>
+
                                 <!-- Label -->
-                                <span class="font-light tracking-wider" v-if="item?.label"> {{ item?.label }} </span>
+                                <span class="font-light tracking-wider" v-if="item?.label">
+                                    {{ $te(`headers.${item?.label}.title`) ? $t(`headers.${item?.label}.title`) : item?.label }}
+                                </span>
+
                             </AppLink>
                         </li>
                     </template>
@@ -177,7 +206,6 @@
 
     // dichiaro la route
     const route = useRoute();
-    const routeName = ref(route.name);
 
     // dichiaro una variabile statica per i test di login
     const isLoggedIn = computed(() => useAuthStore().getAuthStatus);
@@ -187,20 +215,20 @@
     const visible = ref(false);
     const items = ref([
         {
-            label: 'Home',
+            label: 'home',
             icon: 'home',
             name: 'home',
         },
         {
-            label: 'Ordini',
-            icon: 'mintmark',
-            name: 'notFound',
+            label: 'clients',
+            icon: 'contacts_product',
+            name: 'home',
+        },
+        {
+            label: 'orders',
+            icon: 'orders',
+            name: 'home',
             items: [
-                {
-                    label: 'I tuoi ordini',
-                    icon: 'dashboard',
-                    name: 'notFound'
-                },
                 {
                     label: 'Test123',
                     icon: 'dashboard',
@@ -209,9 +237,42 @@
             ]
         },
         {
-            label: 'Clienti',
-            name: 'https://www.momap.it/clienti' 
-        }
+            label: 'quotes',
+            icon: 'request_quote',
+            name: 'home',
+            items: [
+                {
+                    label: 'Test123',
+                    icon: 'dashboard',
+                    name: 'https://www.momap.it/clienti'
+                }
+            ]
+        },
+        {
+            label: 'products',
+            icon: 'inventory_2',
+            name: 'home',
+        },
+        {
+            label: 'areas',
+            icon: 'activity_zone',
+            name: 'home',
+        },
+        {
+            label: 'agents',
+            icon: 'support_agent',
+            name: 'home',
+        },
+        {
+            label: 'provisions_schemes',
+            icon: 'account_balance_wallet',
+            name: 'home',
+        },
+        {
+            label: 'installer',
+            icon: 'tools_installation_kit',
+            name: 'home',
+        },
     ]);
 
     // funzione per il toggle

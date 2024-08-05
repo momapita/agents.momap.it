@@ -7,7 +7,7 @@
             :href="to"
             target="_blank"
             rel="noopener"
-            class="w-full flex items-center gap-2 justify-start px-1 border-b-2 border-transparent font-medium leading-5 hover:border-gray-300 transition duration-150 ease-in-out focus:outline-none"
+            class="w-full flex items-center gap-2 justify-start p-1 border-b-2 border-transparent font-medium leading-5 hover:border-gray-300 transition duration-150 ease-in-out focus:outline-none"
         >
             <slot/>
             <span class="material-symbols-outlined material-symbols-font-300 text-xs"> ungroup </span>
@@ -17,8 +17,8 @@
         <RouterLink
             v-else-if="routeExists"
             :to="routerLinkTo"
-            class="w-full flex items-center gap-2 justify-start px-1 border-b-2 border-transparent font-medium leading-5 hover:border-gray-300 transition duration-150 ease-in-out focus:outline-none"
-            active-class="pb-1 border-momap text-momap dark:text-surface-300 focus:border-momap"
+            class="w-full p-1 flex items-center gap-2 justify-start border-b-2 border-transparent font-medium leading-5 hover:border-gray-300 transition duration-150 ease-in-out focus:outline-none"
+            active-class="text-momap dark:text-surface-300 focus:border-momap"
         >
             <slot/>
         </RouterLink>

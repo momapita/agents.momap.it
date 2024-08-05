@@ -1,12 +1,10 @@
 <template>
     <DataTableWrapper
-        :pageName="'users'"
+        :pageName="'areas'"
         :rows="15"
         :contextMenuSelection="contextMenuSelection"
         :headerButtons="headerButtons"
-        :visibleColumns="['us__name','us__last_name', 'ut__description']"
-        :filterColumns="['us__name', 'ut__description']"
-        :sumCols="['us__name', 'ut__description']"
+        :visibleColumns="['ar__name','ar__area_id','ai__municipality_id']"
         :colsFormat="colsFormat"
         :toolBarStyle="false"
     />
@@ -50,6 +48,7 @@
         }
     ]);
 
+    // definisco la formattazione delle colonne
     const colsFormat = [
         ...TableServices.formatterBaseCols(['us__name', 'us__last_name'], 12)
     ]

@@ -5,7 +5,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import Middleware from './middleware.js';
 
 // first views import
-import HomeView from '@/views/common/Home.vue';
+import HomeView from '@/views/Home.vue';
 
 // Recupero la gerarchia di ruoli
 const roleHierarchy = Middleware.getRoleHierarchy();
@@ -18,7 +18,7 @@ const router = createRouter({
     {
       path: '/login',
       name: 'login',
-      component: () => import('@/views/common/Login.vue'),
+      component: () => import('@/views/auth/Login.vue'),
       meta: { requiresAuth: false }
     },
 
@@ -42,7 +42,7 @@ const router = createRouter({
     {
       path: '/:pathMatch(.*)*',
       name: 'notFound',
-      component: () =>  import('@/views/common/404.vue'),
+      component: () =>  import('@/views/404.vue'),
       meta: { requiresAuth: false }
     }
   
