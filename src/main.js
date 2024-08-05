@@ -19,6 +19,7 @@ import HttpService from "@/http";
 
 // Import PrimeVue and theme
 import PrimeVue from 'primevue/config';
+import Ripple from 'primevue/ripple';
 import { themePreset } from '@/theme';
 
 // Import dei vari layout
@@ -26,6 +27,9 @@ import Wrapper from '@/theme/layouts/Wrapper.vue';
 
 // Import del componente DatatableWrapper
 import DataTableWrapper from '@/components/dataViews/DataTableWrapper.vue';
+
+// Import del componente AppLink
+import AppLink from '@/components/navigations/AppLink.vue';
 
 // Import Styles And Fonts
 import './style.css';
@@ -71,6 +75,9 @@ setGlobalRules();
 // Use formGenerator
 app.component('FormGenerator', FormGenerator);
 
+// Use AppLink
+app.component('AppLink', AppLink);
+
 // Use primevue theme
 app.use(PrimeVue, {
     theme: {
@@ -78,8 +85,10 @@ app.use(PrimeVue, {
         options: {
             darkModeSelector: '.dark',
         }
-    }
+    },
+    ripple: true
 });
+app.directive('ripple', Ripple);
 
 // Use Wrapper and DataTable Wrapper
 app.component('WrapperLayout', Wrapper);

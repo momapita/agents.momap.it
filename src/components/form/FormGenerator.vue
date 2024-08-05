@@ -54,7 +54,7 @@
 
                         <!-- Caso in cui è un Calendar -->
                         <template v-else-if="field?.type === 'calendar'">
-                            <Calendar
+                            <DatePicker
                                 v-model="field.model"
                                 v-bind="field.bind || {}"
                                 :placeholder="$t(`${tKey}.${field?.placeholder}`)"

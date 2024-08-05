@@ -99,6 +99,6 @@
 
         // reindirizzo l'utente
         router.push("/");
-    });
+    }, false);
 
 </script>
