@@ -30,13 +30,69 @@ const router = createRouter({
       meta: { requiredRole: roleHierarchy.agent, requiresAuth: true }
     },
 
-    // testPermessi
+    // Clients
     {
-      path: '/testPermessi',
-      name: 'testPermessi',
-      component: HomeView,
+      path: '/clients',
+      name: 'clients',
+      component: () => import('@/views/clients/View.vue'),
+      meta: { requiredRole: roleHierarchy.agent, requiresAuth: true }
+    },
+
+    // Orders
+    {
+      path: '/orders',
+      name: 'orders',
+      component: () => import('@/views/orders/View.vue'),
+      meta: { requiredRole: roleHierarchy.agent, requiresAuth: true }
+    },
+
+    // Quotes
+    {
+      path: '/quotes',
+      name: 'quotes',
+      component: () => import('@/views/quotes/View.vue'),
+      meta: { requiredRole: roleHierarchy.agent, requiresAuth: true }
+    },
+
+    // Products
+    {
+      path: '/products',
+      name: 'products',
+      component: () => import('@/views/products/View.vue'),
+      meta: { requiredRole: roleHierarchy.agent, requiresAuth: true }
+    },
+
+    // Areas
+    {
+      path: '/areas',
+      name: 'areas',
+      component: () => import('@/views/areas/View.vue'),
       meta: { requiredRole: roleHierarchy.master_agent, requiresAuth: true }
-    }, 
+    },
+
+    // Agents
+    {
+      path: '/agents',
+      name: 'agents',
+      component: () => import('@/views/agents/View.vue'),
+      meta: { requiredRole: roleHierarchy.master_agent, requiresAuth: true }
+    },
+
+    // ProvisionsSchemes
+    {
+      path: '/provisionsSchemes',
+      name: 'provisionsSchemes',
+      component: () => import('@/views/provisionsSchemes/View.vue'),
+      meta: { requiredRole: roleHierarchy.admin, requiresAuth: true }
+    },
+
+    // installer
+    {
+      path: '/installer',
+      name: 'installer',
+      component: () => import('@/views/installer/View.vue'),
+      meta: { requiredRole: roleHierarchy.admin, requiresAuth: true }
+    },
 
     // NotFound
     {

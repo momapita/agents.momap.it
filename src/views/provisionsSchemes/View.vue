@@ -1,6 +1,6 @@
 <template lang="">
     <div>
-        Pagina di homepage
+        Pagina schemi di proviggione
     </div>
 </template>
 <script setup>

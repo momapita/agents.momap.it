@@ -114,6 +114,33 @@ class TableHelper {
             }
         });
     }
+
+    formatterDateCols(arr, formatterObj = null){
+        return arr.map((el) => {
+            return {
+                header: el,
+                components: defineAsyncComponent(() => import("@/components/reusable/Empity.vue")),
+                formatter: {
+                    multiple: false,
+                    format: (val) => {
+
+                        console.log("formatterDateCols", val, formatterObj);
+
+                        // recupero le informazioni della formattazione
+                        const {format = "longNoWeekday", applyTimezone = true } = formatterObj || {};
+
+                        // verifico se la data è valida
+                        if(!DateServices.checkDate(val)){
+                            return t("general.dataNotFound");
+                        }
+
+                        const formattedDate = DateServices.formatDate(val, 'YYYY-MM-DD HH:mm:ss', applyTimezone);
+                        return d(formattedDate, format);
+                    },
+                },
+            }
+        })
+    }
 }
 
 const TableServices = new TableHelper();

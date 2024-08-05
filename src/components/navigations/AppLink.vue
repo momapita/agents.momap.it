@@ -1,5 +1,5 @@
 <template>
-    <section name="appLinkSection" v-if="to && to !== '' && to !== null">
+    <section v-if="isExternal || routeExists">
 
         <!-- Caso in cui è un link Esterno -->
         <a 
@@ -17,8 +17,7 @@
         <RouterLink
             v-else-if="routeExists"
             :to="routerLinkTo"
-            class="w-full p-1 flex items-center gap-2 justify-start border-b-2 border-transparent font-medium leading-5 hover:border-gray-300 transition duration-150 ease-in-out focus:outline-none"
-            active-class="text-momap dark:text-surface-300 focus:border-momap"
+            class="w-full p-1 flex items-center gap-2 justify-start border-b-2 border-transparent leading-5 hover:border-gray-300 transition duration-150 ease-in-out focus:outline-none"
         >
             <slot/>
         </RouterLink>

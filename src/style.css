@@ -59,3 +59,12 @@ body {
 .bottomNavigationStyle {
     @apply z-50 w-full py-2 lg:py-0 lg:max-w-2xl bg-surface-50 dark:border-surface-800 dark:bg-surface-800 border lg:border-none rounded-t-full lg:rounded-none bottom-0 sticky lg:block
 }
+
+/*Style active routing */
+.router-link-exact-active {
+    @apply font-extrabold;
+}
+
+.router-link-exact-active .material-symbols-outlined {
+    @apply !material-symbols-font-300;
+}

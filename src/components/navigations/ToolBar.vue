@@ -8,7 +8,7 @@
             <!-- utente loggato -->
             <template v-if="isLoggedIn">
                 <span class="material-symbols-outlined material-symbols-font-300 cursor-pointer" @click="visible = true"> menu </span>
-                <div class="font-semibold tracking-wider lg:text-lg ml-2 lg:ml-4">
+                <div class="font-semibold tracking-widest lg:text-lg ml-2 lg:ml-4">
                     {{ $te(`headers.${route.name}.title`) ? $t(`headers.${route.name}.title`) : route.name }}
                 </div>
             </template>
@@ -62,7 +62,7 @@
 
                 <!-- Informazioni utente -->
                 <div class="flex flex-col justify-center" v-if="userData != null">
-                    <span class="font-light tracking-wider leading-none">{{ userData?.name }} {{ userData?.last_name }}</span>
+                    <span class="font-light tracking-widest leading-none">{{ userData?.name }} {{ userData?.last_name }}</span>
                     <sub class="leading-none tracking-widest text-gray-400">{{ userData?.email }}</sub>
                 </div>
 
@@ -71,10 +71,9 @@
 
         <!-- Template body -->
         <section name="body" class="overflow-y-auto max-h-full" v-if="items && Array.isArray(items) && items.length > 0">
-            <ul class="overflow-y-auto max-h-full space-y-6 lg:space-y-8">
+            <ul class="overflow-y-auto max-h-full space-y-6 lg:space-y-8 pt-4">
                 <template v-for="(item, index) in items" :key="index">
 
-                    <!-- Controllo se esistono figli ad item -->
                     <template v-if="item?.items && Array.isArray(item?.items)">
                         
                         <!-- sezione per apertura/chiusura del menu a discesa -->
@@ -84,7 +83,7 @@
                                 v-ripple
                                 class="py-2 flex items-center justify-between cursor-pointer p-ripple" 
                                 @click="toggleSection(item)"
-                                :class="item?.class || ''"
+                                
                             >
                             
                                 <!-- Icona e Label -->
@@ -96,7 +95,7 @@
                                     </span>
 
                                     <!-- Label -->
-                                    <span class="font-light tracking-wider" v-if="item?.label">
+                                    <span class="tracking-widest" v-if="item?.label">
                                         {{ $te(`headers.${item?.label}.title`) ? $t(`headers.${item?.label}.title`) : item?.label }}
                                     </span>
 
@@ -108,14 +107,15 @@
 
                             <!-- ul per i figli -->
                             <transition name="fade">
-                                <ul class="list-none py-2 m-0 overflow-hidden space-y-2" v-if="item?.expanded">
+                                <ul class="list-none px-2 pb-2 pt-4 m-0 overflow-hidden space-y-2" v-if="item?.expanded">
                                     <AppLink 
                                         v-for="(subItem, subIndex) in item?.items"
                                         :key="subIndex"
                                         v-ripple
                                         :to="subItem?.name"
                                         class="duration-150 transition-colors p-ripple"
-                                    >
+                                        @click="visible = false"
+                                    > 
                                         
                                         <!-- Icona -->
                                         <span v-if="subItem?.icon" :class="subItem?.class || ''" class="material-symbols-outlined material-symbols-font-300">
@@ -123,7 +123,7 @@
                                         </span>
 
                                         <!-- Label -->
-                                        <span class="font-light tracking-wider" v-if="subItem?.label">
+                                        <span class="font-light tracking-widest" v-if="subItem?.label">
                                             {{ $te(`headers.${subItem?.label}.title`) ? $t(`headers.${subItem?.label}.title`) : subItem?.label }}
                                         </span>
 
@@ -135,22 +135,22 @@
 
                     </template>
 
-                    <!-- Renderizzo item -->
                     <template v-else>
                         <li>
                             <AppLink 
                                 v-ripple
                                 :to="item?.name"
                                 class="duration-150 transition-colors p-ripple"
-                                :class="item?.class || ''"
+                                @click="visible = false"
+                                
                             >
                                 <!-- Icona -->
-                                <span v-if="item?.icon" :class="item?.class || ''" class="mr-3 material-symbols-outlined material-symbols-font-300">
+                                <span v-if="item?.icon" :class="item?.class || ''" class="mr-3 material-symbols-outlined material-symbols-font-100">
                                     {{ item?.icon }}
                                 </span>
 
                                 <!-- Label -->
-                                <span class="font-light tracking-wider" v-if="item?.label">
+                                <span class="tracking-widest" v-if="item?.label">
                                     {{ $te(`headers.${item?.label}.title`) ? $t(`headers.${item?.label}.title`) : item?.label }}
                                 </span>
 
@@ -159,7 +159,6 @@
                     </template>
 
                 </template>
-
             </ul>
         </section>
 
@@ -190,7 +189,6 @@
 
     // services imports
     import { useDark } from '@vueuse/core';
-    import { isMobile } from 'mobile-device-detect';
     import { executeWithGlobalErrorHandling } from '@/helpers/errorHandler';
 
     // store imports
@@ -200,6 +198,9 @@
     import ToggleTheme from '@/components/reusable/ToggleTheme.vue';
     import LanguageSwitcher from '@/components/reusable/LanguageSwitcher.vue';
     import BottomNavigation from '@/components/navigations/BottomNavigation.vue';
+
+    // navigations imports 
+    import navigationsList from "./utils/navigationsList";
 
     // dichiaro una variabile per il dark
     const isDark = useDark();
@@ -213,67 +214,7 @@
 
     // definisco gli oggetti per la sidebar
     const visible = ref(false);
-    const items = ref([
-        {
-            label: 'home',
-            icon: 'home',
-            name: 'home',
-        },
-        {
-            label: 'clients',
-            icon: 'contacts_product',
-            name: 'home',
-        },
-        {
-            label: 'orders',
-            icon: 'orders',
-            name: 'home',
-            items: [
-                {
-                    label: 'Test123',
-                    icon: 'dashboard',
-                    name: 'https://www.momap.it/clienti'
-                }
-            ]
-        },
-        {
-            label: 'quotes',
-            icon: 'request_quote',
-            name: 'home',
-            items: [
-                {
-                    label: 'Test123',
-                    icon: 'dashboard',
-                    name: 'https://www.momap.it/clienti'
-                }
-            ]
-        },
-        {
-            label: 'products',
-            icon: 'inventory_2',
-            name: 'home',
-        },
-        {
-            label: 'areas',
-            icon: 'activity_zone',
-            name: 'home',
-        },
-        {
-            label: 'agents',
-            icon: 'support_agent',
-            name: 'home',
-        },
-        {
-            label: 'provisions_schemes',
-            icon: 'account_balance_wallet',
-            name: 'home',
-        },
-        {
-            label: 'installer',
-            icon: 'tools_installation_kit',
-            name: 'home',
-        },
-    ]);
+    const items = ref(navigationsList || []);
 
     // funzione per il toggle
     const toggleSection = executeWithGlobalErrorHandling(async (item) => {

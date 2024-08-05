@@ -39,10 +39,6 @@ export default {
         title: 'Installers',
         description: 'Complete overview of installers'
     },
-    testPermessi: {
-        title: 'TestPermissions',
-        description: 'TestPermissions'
-    },
     notFound: {
         title: '404',
         description: 'Page not found'

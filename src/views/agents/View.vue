@@ -1,6 +1,6 @@
 <template lang="">
     <div>
-        Pagina di homepage
+        Pagina agenti
     </div>
 </template>
 <script setup>
