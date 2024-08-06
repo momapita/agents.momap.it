@@ -131,5 +131,8 @@ export default{
     us__updated_at:"Aggiornato il",
     us__p_iva:"Partita IVA",
     us__master_id:"ID Master",
-    us__active:"Attivo"
+    us__active:"Attivo",
+    regions_ids: "Regioni",
+    provinces_ids: "Province",
+    municipality_ids: "Comuni",
 }

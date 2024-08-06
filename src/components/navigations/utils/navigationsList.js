@@ -75,7 +75,7 @@ export default [
     {
         label: 'provisions_schemes',
         icon: 'account_balance_wallet',
-        name: 'provisions_schemes',
+        name: 'provisionsSchemes',
     },
     {
         label: 'installer',

@@ -14,10 +14,15 @@ export const useAreasStore = defineStore('areas', {
         
         async setAreas() {
             this.isLoading = true;
+
             await executeWithGlobalErrorHandling(async () => {
                 
                 if (!Middleware.hasPermission('admin')) {
                     throw new Error('Permission Denied');
+                }
+
+                if(this.areas !== null) {
+                    return;
                 }
 
                 // Effettuo la chiamata HTTP
@@ -29,6 +34,7 @@ export const useAreasStore = defineStore('areas', {
 
             }, false).call(this);
         }
+
     },
 
     getters: {
@@ -89,3 +95,6 @@ export const useAreasStore = defineStore('areas', {
 
     }
 });
+
+// Esegui l'inizializzazione automatica del store
+await useAreasStore().setAreas();

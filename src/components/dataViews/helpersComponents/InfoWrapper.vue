@@ -1,6 +1,6 @@
 <template lang="">
     <div>
-        {{ data?.info || 'Nessuna informazione' }}
+        {{ infoMessage || 'Nessuna informazione' }}
     </div>
 </template>
 
@@ -12,10 +12,10 @@
     // recupero il riferimento del dialog globale
     const dialogRef = inject('dialogRef');
 
-    const data = ref(null);
+    const infoMessage = ref(null);
 
     onMounted(() => {
-        data.value = dialogRef.value.data;
+        infoMessage.value = dialogRef.value.data;
     });
 
 </script>

@@ -60,36 +60,8 @@ class TableHelper {
         return string.length > length ? `${string.slice(0, length)}...` : string;
     }
 
-    basedDialogOptions(){
-        return {
-            props: {
-                header: t('general.info'),
-                modal: true,
-                draggable: true,
-                dismissableMask: true,
-                maximizable: true,
-                style: {
-                    width: '50vw',
-                },
-                breakpoints:{
-                    '960px': '75vw',
-                    '640px': '100vw'
-                }
-            }
-        }
-    }
-
-    emitShowInfo(info){
-        
-        // Setto le options
-        const options = {
-            ...this.basedDialogOptions(),
-            data: { info }
-        }
-
-        // Emitto il dialog
-        DialogBus.emit(InfoWrapper, options);
-
+    emitShowInfo(data){
+        DialogBus.emit(InfoWrapper, { data });
     }
 
     formatterBaseCols(arr, valTruncate = 15, translateKey = null){
@@ -123,8 +95,6 @@ class TableHelper {
                 formatter: {
                     multiple: false,
                     format: (val) => {
-
-                        console.log("formatterDateCols", val, formatterObj);
 
                         // recupero le informazioni della formattazione
                         const {format = "longNoWeekday", applyTimezone = true } = formatterObj || {};
