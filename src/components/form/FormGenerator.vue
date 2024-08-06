@@ -35,6 +35,7 @@
                             <Select 
                                 v-model="field.model"
                                 v-bind="field.bind"
+                                @change="field?.bind?.onchange && typeof field?.bind?.onchange === 'function' ? field.bind?.onchange($event) : null"
                                 :placeholder="$t(`${tKey}.${field?.placeholder}`)"
                                 class="w-full"
                                 :inputProps="{ autocomplete: true }"
@@ -46,6 +47,7 @@
                             <MultiSelect 
                                 v-model="field.model"
                                 v-bind="field.bind"
+                                @change="field?.bind?.onchange && typeof field?.bind?.onchange === 'function' ? field.bind?.onchange($event) : null"
                                 :placeholder="$t(`${tKey}.${field?.placeholder}`)"
                                 class="w-full"
                                 :inputProps="{ autocomplete: true }"
@@ -214,6 +216,41 @@
         }
     };
 
+    // definisco una funzione da esporre per aggiornare un singolo campo
+    const onUpdateField = (key, value, updateKeys = ['model']) => {
+        try {
+
+            if (!localData.value.hasOwnProperty(key)) {
+                throw new Error(`Key '${key}' does not exist in localData.value`);
+            }
+
+            let target = localData.value[key];
+
+            // Usa reduce per attraversare le chiavi tranne l'ultima
+            target = updateKeys.slice(0, -1).reduce((acc, currentKey) => {
+                if (!acc.hasOwnProperty(currentKey)) {
+                    throw new Error(`Key '${currentKey}' does not exist in the path`);
+                }
+                return acc[currentKey];
+            }, target);
+
+            const lastKey = updateKeys[updateKeys.length - 1];
+            if (!target.hasOwnProperty(lastKey)) {
+                throw new Error(`Key '${lastKey}' does not exist in the final target`);
+            }
+
+            // Imposta il valore all'ultima chiave
+            target[lastKey] = value;
+        } catch (error) {
+            console.error(error.message);
+        }
+    };
+
+    // get Fields model
+    const getFieldsModel = (key) => {
+        return localData.value.hasOwnProperty(key) ? localData.value[key].model : null;
+    };
+
     // hook per validare props.fields
     onMounted(async () => {
         try {
@@ -226,6 +263,12 @@
         } catch (error) {
             errorFormatter.value = true;
         }
+    });
+
+    // esporto le variabili
+    defineExpose({
+        onUpdateField,
+        getFieldsModel
     });
 
 </script>

@@ -7,7 +7,7 @@ export const useAreasStore = defineStore('areas', {
     
     state: () => ({
         areas: null,
-        isLoading: false,
+        isLoading: true,
     }),
 
     actions: {
@@ -48,6 +48,24 @@ export const useAreasStore = defineStore('areas', {
                 id: item.id,
                 label: item?.description ? item.description.toLowerCase() : null
             }))
+        },
+
+        // Recupero tutte le regioni 
+        allRegions: (state) => {
+            const regions = state.areas?.flatMap(item => Object.values(item.regions));
+            return regions.map(({ id, name }) => ({ id, label: name }));
+        },
+
+        // Recupero tutte le province
+        allProvinces: (state) => {
+            const provinces = state.areas?.flatMap(item => Object.values(item.regions)).flatMap(item => Object.values(item.provinces));
+            return provinces.map(({ id, name }) => ({ id, label: name }));
+        },
+
+        // Recupero tutti i comuni
+        allMunicipalities: (state) => {
+            const municipalities = state.areas?.flatMap(item => Object.values(item.regions)).flatMap(item => Object.values(item.provinces)).flatMap(item => Object.values(item.municipalities));
+            return municipalities.map(({ id, name }) => ({ id, label: name }));
         },
 
         // Recupero le regioni della specifica area geografica

@@ -37,7 +37,8 @@ export const resetFormModel = (model, showElements = [], notShowElements = []) =
           rules: field?.rules,
           bind: field?.bind,
           autocompleteReference: field?.autocompleteReference || null,
-          localTranslate: field?.localTranslate || false
+          localTranslate: field?.localTranslate || false,
+          arrToString: field?.arrToString || false
         };
         return acc;
       }, {});
@@ -46,6 +47,27 @@ export const resetFormModel = (model, showElements = [], notShowElements = []) =
     } catch (error) {
       return null;
     }
+};
+
+// Funzione per riempire un modello semplice
+const getLocalModel = (data, key, field, internalModel) => {
+  
+  // Convert the array to a string
+  const convertArrayToString = (arr) => arr.map(String);
+
+  if (data.hasOwnProperty(key)) {
+    if (internalModel === false) {
+      return Array.isArray(data[key]) && field?.arrToString ? convertArrayToString(data[key]) : data[key];
+    } else {
+      return Array.isArray(data[key]?.model) && field?.arrToString  ? convertArrayToString(data[key]?.model)  : data[key]?.model;
+    }
+  } else {
+    if (field?.resetString) {
+      return "";
+    } else {
+      return Array.isArray(field?.model) && field?.arrToString  ? convertArrayToString(field?.model)  : field?.model ?? null;
+    }
+  }
 };
 
 // Funzione per riempire un modello del form
@@ -66,7 +88,7 @@ export const fillFormModel = (model, data, notShowElements = [], showElements = 
       const filledNewModel = Object.entries(model.value).reduce((acc, [key, field]) => {
         
         // Creo il modello locale
-        const localModel = data.hasOwnProperty(key) ? (internalModel === false ? data[key] : data[key]?.model) : (field?.resetString && field?.resetString === true ? "" : field?.model ?? null);
+        const localModel = getLocalModel(data, key, field, internalModel);
 
         // Creo il bind locale
         const bind = disabledElements.includes(key) && field?.bind ? { ...field.bind, disabled: true } : (field?.bind || null);
@@ -85,7 +107,8 @@ export const fillFormModel = (model, data, notShowElements = [], showElements = 
           rules: field?.rules,
           bind: bind,
           autocompleteReference: field?.autocompleteReference || null,
-          localTranslate: field?.localTranslate || false
+          localTranslate: field?.localTranslate || false,
+          arrToString: field?.arrToString || false
         };
         return acc;
       }, {});

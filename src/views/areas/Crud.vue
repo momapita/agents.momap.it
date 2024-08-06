@@ -1,7 +1,12 @@
 <template>
-    <div>
-        <FormGenerator :fields="formModel" :key="formKey" :tKey="'table'" class="w-full" @submit="onSubmit" />
-    </div>
+    <FormGenerator 
+        :fields="formModel"
+        :key="formKey"
+        :tKey="'table'"
+        class="w-full"
+        ref="formRef"
+        @submit="onSubmit"
+    />
 </template>
 
 <script setup>
@@ -13,8 +18,10 @@
     import { executeWithGlobalErrorHandling, executeFormWithGlobalErrorHandling } from '@/helpers/errorHandler';
 
     // services and models imports
-    import formModels from "./models";
-    import { fillFormModel, resetFormModel } from "@/helpers/form.js"; 
+    import { fillFormModel } from "@/helpers/form.js"; 
+
+    // store imports
+    import { useAreasStore } from '@/stores/areas.js';
 
     // recupero il riferimento del dialog globale
     const dialogRef = inject('dialogRef');
@@ -22,19 +29,86 @@
     // http service
     const HttpService = inject('HttpService');
 
-    // definisco il modello per il form e il riferimento
-    const formModel = ref(formModels);
+    // definisco il modello per il form
+    const formModel = ref({
+        ar__area_id: {
+            key: "ar__area_id",
+            label: "ar__area_id",
+            placeholder: "ar__area_id",
+            model: null,
+            type: "text",
+            notShow: true
+        },
+        ar__name: {
+            key: "ar__name",
+            label: "ar__name",
+            placeholder: "ar__name",
+            model: null,
+            type: "text",
+            rules: 'required|min:4',
+        },
+        regions_ids: {
+            key: "regions_ids",
+            label: "regions_ids",
+            placeholder: "regions_ids",
+            model: null,
+            type: "multiselect",
+            bind: {
+                onchange: (event) => {
+
+                    // recupero le province
+                    const regionsIds = Array.isArray(event?.value) ? event.value.map(Number) : [];
+                    const provinces = regionsIds.length ? useAreasStore().getProvincesByRegionIds(regionsIds) || [] : useAreasStore().allProvinces;
+
+                    // recupero le province selezionate dall'utente e le filtro dalle province risultanti
+                    const selectedProvincesIds = Array.isArray(formRef.value?.getFieldsModel('provinces_ids')) ? formRef.value?.getFieldsModel('provinces_ids').map(Number) : [];
+                    const filteredSelectProvincesIds = selectedProvincesIds.filter(id => new Set(provinces.map(obj => parseInt(obj.id))).has(id)).map(id => id.toString());
+
+                    // aggiorno le opzioni e il modello
+                    formRef.value?.onUpdateField('provinces_ids', provinces, ['bind', 'options']);
+                    formRef.value?.onUpdateField('provinces_ids', filteredSelectProvincesIds, ['model']);
+
+                },
+                filter: true,
+                filterFields: ['label', 'id'],
+                showClear: true,
+                optionLabel: "label",
+                optionValue: "id",
+                virtualScrollerOptions: { itemSize: 38 },
+                display: "chip",
+                options: useAreasStore().allRegions,
+            },
+            arrToString: true,
+            rules: 'required'
+        },
+        provinces_ids: {
+            key: "provinces_ids",
+            label: "provinces_ids",
+            placeholder: "provinces_ids",
+            model: null,
+            type: "multiselect",
+            bind: {
+                filter: true,
+                filterFields: ['label', 'id'],
+                showClear: true,
+                optionLabel: "label",
+                optionValue: "id",
+                virtualScrollerOptions: { itemSize: 38 },
+                display: "chip",
+                options: useAreasStore().allProvinces
+            },
+            arrToString: true,
+            rules: 'required'
+        },
+    });
+
+    // definisco il formKey e il riferimento
     const formKey = ref(0);
+    const formRef = ref(null);
 
     // definisco le props derivanti dal dialog e la modalità del crud
     const props = ref(null);
     const addMode = computed(() => props?.value?.mode === 'add');
-
-    // definisco la funzione per il reset del formModel
-    const reinitFormModel = async () => {
-        formModel.value = resetFormModel(formModel);
-        formKey.value += 1;
-    };
 
     // definisco la funzione per riempire il modello in modifica
     const fillModelEdit = executeWithGlobalErrorHandling(async () => {
