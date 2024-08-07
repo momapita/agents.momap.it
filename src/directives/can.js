@@ -8,7 +8,6 @@ export default {
         const requiredRole = binding.value;
 
         if(!Middleware.hasPermission(requiredRole)) {
-            console.log('Permission denied');
             el.parentNode && el.parentNode.removeChild(el);
         }
     }

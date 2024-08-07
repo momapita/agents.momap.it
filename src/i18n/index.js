@@ -21,7 +21,7 @@ import itBaseI18n from '@/i18n/locales/it/index.js';
 
 // import vee-validate/i18n
 import { configure as configVeeValidate } from 'vee-validate';
-import { localize } from '@vee-validate/i18n';
+import { localize, setLocale as setVeeValidateLocale } from '@vee-validate/i18n';
 
 // import languages for veeValidate
 import it from '@/i18n/locales/it/veeValidate.js';
@@ -34,6 +34,8 @@ configVeeValidate({
     it,
   }),
 })
+
+setVeeValidateLocale(import.meta.env.VITE_DEFAULT_LOCALE);
 
 // configuro vue-i18n
 export default createI18n({

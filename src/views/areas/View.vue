@@ -47,7 +47,7 @@
             {
                 type: 'delete',
                 disabled: false,
-                action: (event) => deleteArea(event)
+                action: (event) => executeDelete(event)
             }
         ]
     });
@@ -74,7 +74,7 @@
     }
 
     // definisco la funzione per eliminare l'area
-    const deleteArea = executeWithGlobalErrorHandling(async (values) => {
+    const executeDelete = executeWithGlobalErrorHandling(async (values) => {
 
         // setto il middleware
         if(!Middleware.hasPermission('admin')) {

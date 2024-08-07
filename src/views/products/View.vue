@@ -1,12 +1,11 @@
 <template>
     <DataTableWrapper
         ref="tableRef"
-        :pageName="'areas'"
+        :pageName="'products'"
         :rows="15"
         :contextMenuSelection="contextMenuSelection"
         :headerButtons="headerButtons"
-        :visibleColumns="['ar__name','ar__created_at', 'ar__active', 'ar__deactived_at']"
-        :filterColumns="['ar__name', 'ar__created_at', 'ar__deactived_at']"
+        :filterColumns="['pr__fatt_api_code', 'pr__fatt_api_name','pr__fatt_api_description', 'pr__fatt_api_stock_current', 'pr__fatt_api_created_at', 'pr__fatt_api_updated_at', 'pr__fatt_api_category']"
         :colsFormat="colsFormat"
         :toolBarStyle="false"
     />
@@ -38,6 +37,7 @@
     const contextMenuSelection = ref({
         show: true,
         frozen: false,
+        requireRole: 'agent',
         obj: [
             {
                 type: 'edit',
@@ -47,10 +47,9 @@
             {
                 type: 'delete',
                 disabled: false,
-                action: (event) => deleteArea(event)
+                action: (event) => executeDelete(event)
             }
         ],
-        requireRole: 'admin'
     });
 
     // definisco la funzione per pulsanti nell'header della tabella
@@ -58,6 +57,7 @@
         {
             type: 'add',
             disabled: false,
+            requireRole: 'admin',
             action: (event) => showModal('add', event)
         }
     ]);
@@ -74,8 +74,8 @@
         dialogBus.emit(CrudView, optionsData);
     }
 
-    // definisco la funzione per eliminare l'area
-    const deleteArea = executeWithGlobalErrorHandling(async (values) => {
+    // definisco la funzione per eliminare il prodotto
+    const executeDelete = executeWithGlobalErrorHandling(async (values) => {
 
         // setto il middleware
         if(!Middleware.hasPermission('admin')) {
@@ -88,25 +88,27 @@
         }
 
         // recupero l'id
-        const { ar__area_id: id = null } = values;
+        const { pr_product_id : id = null } = values;
 
         // controllo che esista id
         if(!id || parseInt(id) <= 0 || isNaN(parseInt(id)) || parseInt(id) === undefined) {
             throw new Error('id non trovato');
         }
 
-        // elimino l'area
-        await HttpService.delete(`areas/${id}`);
+        console.log("executeDelete", id);
+
+        /* elimino il prodotto
+        await HttpService.delete(`product/${id}`);
 
         // ricarico la tabella
-        tableRef.value && tableRef.value.reload();
+        tableRef.value && tableRef.value.reload();*/
 
     });
 
     // definisco la funzione per pulsanti nell'header della tabella
     const colsFormat = [
-        ...TableServices.formatterBaseCols(['ar__name'], 12),
-        ...TableServices.formatterDateCols(['ar__created_at', 'ar__updated_at', 'ar__deactived_at'])
+        ...TableServices.formatterBaseCols(['pr__fatt_api_code', 'pr__fatt_api_name','pr__fatt_api_description', 'pr__fatt_api_stock_current', 'pr__fatt_api_category'], 12),
+        ...TableServices.formatterDateCols(['pr__fatt_api_created_at', 'pr__fatt_api_updated_at'])
     ]
 
 </script>

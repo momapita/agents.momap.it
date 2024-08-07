@@ -245,7 +245,7 @@
 
             <!-- Se è richiesta la colonna delle opzioni, la aggiungo -->
             <Column
-                v-if="optionsCol && contextMenuSelection.obj"
+                v-if="(optionsCol && contextMenuSelection.obj) && ( ('requireRole' in contextMenuSelection) && Middleware.hasPermission(contextMenuSelection?.requireRole) )"
                 :header="$t('general.options')"
                 alignFrozen="right"
                 :frozen="contextMenuSelection?.frozen && contextMenuSelection?.frozen === true"
@@ -265,12 +265,14 @@
 
     // Based imports
     import { ref, onMounted, inject } from 'vue';
-    import { useI18n } from "vue-i18n";
 
     // Services imports
     import dayjs from 'dayjs';
     import TableServices from '@/helpers/table';
     import { isMobile } from 'mobile-device-detect';
+
+    // Middleware and error handler import and services
+    import Middleware from '@/router/middleware.js';
 
     // helpers components imports
     import OptionsWrapper from './helpersComponents/OptionsWrapper.vue';
@@ -434,12 +436,8 @@
         }
     });
 
-    // definisco la lingua
-    const { t } = useI18n();
-
     // import http service e toastBus
     const HttpService = inject('HttpService');
-    const toastBus = inject('toastBus');
 
     // definisco i riferimenti utili per il context menu e la riga selezionata
     const cm = ref(null);

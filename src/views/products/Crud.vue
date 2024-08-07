@@ -22,9 +22,6 @@
     // services and models imports
     import { fillFormModel } from "@/helpers/form.js"; 
 
-    // store imports
-    import { useAreasStore } from '@/stores/areas.js';
-
     // recupero il riferimento del dialog globale
     const dialogRef = inject('dialogRef');
 
@@ -33,94 +30,66 @@
 
     // definisco il modello per il form
     const formModel = ref({
-        ar__area_id: {
-            key: "ar__area_id",
-            label: "ar__area_id",
-            placeholder: "ar__area_id",
+        pr__product_id: {
+            key: "pr__product_id",
+            label: "pr__product_id",
+            placeholder: "pr__product_id",
             model: null,
             type: "text",
             notShow: true
         },
-        ar__name: {
-            key: "ar__name",
-            label: "ar__name",
-            placeholder: "ar__name",
+        pr__fatt_api_code: {
+            key: "pr__fatt_api_code",
+            label: "pr__fatt_api_code",
+            placeholder: "pr__fatt_api_code",
+            model: null,
+            type: "number",
+            rules: 'required',
+        },
+        pr__fatt_api_name: {
+            key: "pr__fatt_api_name",
+            label: "pr__fatt_api_name",
+            placeholder: "pr__fatt_api_name",
             model: null,
             type: "text",
-            rules: 'required|min:4',
+            rules: 'required',
         },
-        regions_ids: {
-            key: "regions_ids",
-            label: "regions_ids",
-            placeholder: "regions_ids",
+        pr__fatt_api_net_price: {
+            key: "pr__fatt_api_net_price",
+            label: "pr__fatt_api_net_price",
+            placeholder: "pr__fatt_api_net_price",
             model: null,
-            type: "multiselect",
+            type: "number",
             bind: {
-                onchange: (event) => {
-
-                    // recupero le province
-                    const regionsIds = Array.isArray(event?.value) ? event.value.map(Number) : [];
-                    const provinces = regionsIds.length ? useAreasStore().getProvincesByRegionIds(regionsIds) || [] : useAreasStore().allProvinces;
-
-                    // recupero le province selezionate dall'utente e le filtro dalle province risultanti
-                    const selectedProvincesIds = Array.isArray(formRef.value?.getFieldsModel('provinces_ids')) ? formRef.value?.getFieldsModel('provinces_ids').map(Number) : [];
-                    const filteredSelectProvincesIds = selectedProvincesIds.filter(id => new Set(provinces.map(obj => parseInt(obj.id))).has(id)).map(id => id.toString());
-
-                    // aggiorno le opzioni e il modello
-                    formRef.value?.onUpdateField('provinces_ids', provinces, ['bind', 'options']);
-                    formRef.value?.onUpdateField('provinces_ids', filteredSelectProvincesIds, ['model']);
-
-                },
-                filter: true,
-                filterFields: ['label', 'id'],
-                showClear: true,
-                optionLabel: "label",
-                optionValue: "id",
-                virtualScrollerOptions: { itemSize: 38 },
-                display: "chip",
-                options: useAreasStore().allRegions,
+                mode: "currency",
+                currency: "EUR",
+                locale: "it-IT",
+                min: 0,
+                max: 1000000
             },
-            arrToString: true,
-            rules: 'required'
+            rules: 'required|min:0|max:1000000',
         },
-        provinces_ids: {
-            key: "provinces_ids",
-            label: "provinces_ids",
-            placeholder: "provinces_ids",
+        pr__fatt_api_description: {
+            key: "pr__fatt_api_description",
+            label: "pr__fatt_api_description",
+            placeholder: "pr__fatt_api_description",
             model: null,
-            type: "multiselect",
-            bind: {
-                filter: true,
-                filterFields: ['label', 'id'],
-                showClear: true,
-                optionLabel: "label",
-                optionValue: "id",
-                virtualScrollerOptions: { itemSize: 38 },
-                display: "chip",
-                options: useAreasStore().allProvinces
-            },
-            arrToString: true,
-            rules: 'required'
+            type: "text"
         },
-        /*municipalities_ids: {
-            key: "municipalities_ids",
-            label: "municipalities_ids",
-            placeholder: "municipalities_ids",
+        pr__fatt_api_category: {
+            key: "pr__fatt_api_category",
+            label: "pr__fatt_api_category",
+            placeholder: "pr__fatt_api_category",
             model: null,
-            type: "multiselect",
-            bind: {
-                filter: true,
-                filterFields: ['label', 'id'],
-                showClear: true,
-                optionLabel: "label",
-                optionValue: "id",
-                virtualScrollerOptions: { itemSize: 38 },
-                display: "chip",
-                options: useAreasStore().allMunicipalities
-            },
-            arrToString: true,
-            rules: 'required'
-        }*/
+            type: "text"
+        },
+        pr__fatt_api_notes: {
+            key: "pr__fatt_api_notes",
+            label: "pr__fatt_api_notes",
+            placeholder: "pr__fatt_api_notes",
+            model: null,
+            type: "textarea"
+        }
     });
 
     // definisco il formKey, il riferimento e il loading
@@ -143,7 +112,7 @@
             throw new Error('data non trovata');
         }
 
-        const { ar__area_id: id = null } = props?.value?.event;
+        const { pr__product_id: id = null } = props?.value?.event;
     
         // controllo che esista id
         if(!id || parseInt(id) <= 0 || isNaN(parseInt(id)) || parseInt(id) === undefined) {
@@ -151,7 +120,7 @@
         }
 
         // recupero i dati dell'area
-        const response = await HttpService.get(`areas/${id}`);
+        const response = await HttpService.get(`products/${id}`);
 
         // setto i dati nel modello
         formModel.value = fillFormModel(formModel, response.data);
@@ -171,21 +140,10 @@
         // recupero event
         const { event } = values;
 
-        // recupero i comuni in base alle province
-        const municipalitiesIds = (useAreasStore().getMunicipalitiesByProvinceIds(Array.isArray(event?.provinces_ids) ? event.provinces_ids.map(Number) : []) || [])
+        console.log("onSubmit", event);
 
-        // controllo che ci siano comuni
-        if(!municipalitiesIds.length) {
-            throw new Error('Seleziona almeno una comune');
-        }
-
-        const obj = {
-            ...event,
-            area_items_array: municipalitiesIds.map(municipality => municipality.id)
-        };
-
-        // invio la richiesta per inserimento o modifica
-        obj?.ar__area_id ? await HttpService.put('areas', obj) : await HttpService.post('areas', obj);
+        /* invio la richiesta per inserimento o modifica
+        obj?.pr__product_id ? await HttpService.put('products', event) : await HttpService.post('products', event);
 
         // setto il loading a false
         blocked.value = false;
@@ -194,7 +152,7 @@
         dialogRef.value.close();
 
         // ricarico la tabella 
-        props?.value?.tableRef && props?.value?.tableRef.reload();
+        props?.value?.tableRef && props?.value?.tableRef.reload();*/
         
     });
 

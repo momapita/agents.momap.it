@@ -5,6 +5,7 @@
             :key="index"
             v-bind="(item?.type in mapArrType) && mapArrType[item?.type]?.bind ? mapArrType[item?.type]?.bind : null"
             @click="item?.action"
+            v-can="('requireRole' in item) ? item?.requireRole : 'agent'"
             :class="$style.headerButtonTable"
         >
             <span class="material-symbols-outlined material-symbols-font-300"> {{ mapArrType[item?.type]?.icon }} </span>
