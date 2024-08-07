@@ -98,6 +98,7 @@
                     severity="contrast"
                     icon="pi pi-refresh"
                     outlined
+                    @click="reload"
                     :label="isMobile != true ? $t('general.reload') : null"
                     v-if="!toolBarStyle"
                 />
@@ -722,6 +723,10 @@
         }
     };
 
+    const reload = async () => {
+        await loadDatatableData();
+    };
+
     onMounted(async () => {
 
         // inizializzo i filtri
@@ -738,6 +743,10 @@
         // setto il loading a true
         firstLoading.value = true;
 
+    });
+
+    defineExpose({
+        reload
     });
 
 </script>

@@ -1,136 +1,142 @@
 <template>
-    <Form method="post" class="text-sm" @submit="onSaveEdit">
+    <BlockUI :blocked="blocked" :class="blocked ? 'relative' : ''">
         
-        <!-- Sezione dei vari fields -->
-        <div :class="styleComputed">
-            <div v-for="(field, key) in localData" :key="key" v-show="field && !field?.notShow">
-                <div class="w-full flex items-start justify-center gap-2 flex-col">
+        <ProgressSpinner v-if="blocked" class="absolute top-1/2 left-1/2 -translate-x-1/2 translate-y-1/2" />
+        
+        <Form method="post" class="text-sm" @submit="onSaveEdit">
+        
+            <!-- Sezione dei vari fields -->
+            <div :class="styleComputed">
+                <div v-for="(field, key) in localData" :key="key" v-show="field && !field?.notShow">
+                    <div class="w-full flex items-start justify-center gap-2 flex-col">
 
-                    <!-- Label and Error Message -->
-                    <label :for="field?.key" class="flex items-center gap-2 flex-wrap pl-2">
-                        
-                        <!-- Field information -->
-                        <div v-if="field?.label && Array.isArray(field?.label) && field?.label.length > 0" class="space-x-1">
-                            <span v-for="(singleField, index) in field?.label" :key="index">
-                                {{ $t(field?.localTranslate ? singleField : `${tKey ? `${tKey}.` : ''}${singleField}`) }}
-                            </span>
-                        </div>
+                        <!-- Label and Error Message -->
+                        <label :for="field?.key" class="flex items-center gap-2 flex-wrap pl-2">
+                            
+                            <!-- Field information -->
+                            <div v-if="field?.label && Array.isArray(field?.label) && field?.label.length > 0" class="space-x-1">
+                                <span v-for="(singleField, index) in field?.label" :key="index">
+                                    {{ $t(field?.localTranslate ? singleField : `${tKey ? `${tKey}.` : ''}${singleField}`) }}
+                                </span>
+                            </div>
 
-                        <div v-else-if="field?.label && !Array.isArray(field?.label) && field?.label !== '' && field?.label !== null">
-                            {{ $t(field?.localTranslate ? field : `${tKey ? `${tKey}.` : ''}${field?.label}`) }}
-                        </div>
+                            <div v-else-if="field?.label && !Array.isArray(field?.label) && field?.label !== '' && field?.label !== null">
+                                {{ $t(field?.localTranslate ? field : `${tKey ? `${tKey}.` : ''}${field?.label}`) }}
+                            </div>
 
-                        <!-- Error message -->
-                        <ErrorMessage as="div" :name="field?.key" v-slot="{ message }">
-                            <Message severity="error" class="text-xs">{{ message }}</Message>
-                        </ErrorMessage>
+                            <!-- Error message -->
+                            <ErrorMessage as="div" :name="field?.key" v-slot="{ message }">
+                                <Message severity="error" class="text-xs">{{ message }}</Message>
+                            </ErrorMessage>
 
-                    </label>
+                        </label>
 
-                    <!-- Renderizzo il field con il template per le varie tipologie -->
-                    <Field v-model="field.model" :name="field?.key" :placeholder="$t(`${tKey}.${field?.placeholder}`)" :rules="field?.rules || null" autocomplete="on">
-                        
-                        <!-- Caso in cui è un Dropdown -->
-                        <template v-if="field?.type === 'dropdown'">
-                            <Select 
-                                v-model="field.model"
-                                v-bind="field.bind"
-                                @change="field?.bind?.onchange && typeof field?.bind?.onchange === 'function' ? field.bind?.onchange($event) : null"
-                                :placeholder="$t(`${tKey}.${field?.placeholder}`)"
-                                class="w-full"
-                                :inputProps="{ autocomplete: true }"
-                            />
-                        </template>
+                        <!-- Renderizzo il field con il template per le varie tipologie -->
+                        <Field v-model="field.model" :name="field?.key" :placeholder="$t(`${tKey}.${field?.placeholder}`)" :rules="field?.rules || null" autocomplete="on">
+                            
+                            <!-- Caso in cui è un Dropdown -->
+                            <template v-if="field?.type === 'dropdown'">
+                                <Select 
+                                    v-model="field.model"
+                                    v-bind="field.bind"
+                                    @change="field?.bind?.onchange && typeof field?.bind?.onchange === 'function' ? field.bind?.onchange($event) : null"
+                                    :placeholder="$t(`${tKey}.${field?.placeholder}`)"
+                                    class="w-full"
+                                    :inputProps="{ autocomplete: true }"
+                                />
+                            </template>
 
-                        <!-- Caso in cui è una multiselect -->
-                        <template v-else-if="field?.type === 'multiselect'">
-                            <MultiSelect 
-                                v-model="field.model"
-                                v-bind="field.bind"
-                                @change="field?.bind?.onchange && typeof field?.bind?.onchange === 'function' ? field.bind?.onchange($event) : null"
-                                :placeholder="$t(`${tKey}.${field?.placeholder}`)"
-                                class="w-full"
-                                :inputProps="{ autocomplete: true }"
-                            />
-                        </template>
+                            <!-- Caso in cui è una multiselect -->
+                            <template v-else-if="field?.type === 'multiselect'">
+                                <MultiSelect 
+                                    v-model="field.model"
+                                    v-bind="field.bind"
+                                    @change="field?.bind?.onchange && typeof field?.bind?.onchange === 'function' ? field.bind?.onchange($event) : null"
+                                    :placeholder="$t(`${tKey}.${field?.placeholder}`)"
+                                    class="w-full"
+                                    :inputProps="{ autocomplete: true }"
+                                />
+                            </template>
 
-                        <!-- Caso in cui è un Calendar -->
-                        <template v-else-if="field?.type === 'calendar'">
-                            <DatePicker
-                                v-model="field.model"
-                                v-bind="field.bind || {}"
-                                :placeholder="$t(`${tKey}.${field?.placeholder}`)"
-                                class="w-full"
-                                :inputProps="{ autocomplete: true }"
-                            />
-                        </template>
+                            <!-- Caso in cui è un Calendar -->
+                            <template v-else-if="field?.type === 'calendar'">
+                                <DatePicker
+                                    v-model="field.model"
+                                    v-bind="field.bind || {}"
+                                    :placeholder="$t(`${tKey}.${field?.placeholder}`)"
+                                    class="w-full"
+                                    :inputProps="{ autocomplete: true }"
+                                />
+                            </template>
 
-                        <!-- Caso in cui è un numero -->
-                        <template v-else-if="field?.type === 'number'">
-                            <InputNumber 
-                                v-model="field.model"
-                                v-bind="field.bind || {}"
-                                :placeholder="$t(`${tKey}.${field?.placeholder}`)"
-                                class="w-full"
-                                :inputProps="{ autocomplete: true }"
-                            />
-                        </template>
+                            <!-- Caso in cui è un numero -->
+                            <template v-else-if="field?.type === 'number'">
+                                <InputNumber 
+                                    v-model="field.model"
+                                    v-bind="field.bind || {}"
+                                    :placeholder="$t(`${tKey}.${field?.placeholder}`)"
+                                    class="w-full"
+                                    :inputProps="{ autocomplete: true }"
+                                />
+                            </template>
 
-                        <!-- Caso in cui è un toggle -->
-                        <template v-else-if="field?.type === 'toggle'">
-                            <ToggleButton 
-                                v-model="field.model" 
-                                v-bind="field.bind || {}"
-                                class="w-full"
-                                :inputProps="{ autocomplete: true }"
-                            />
-                        </template>
+                            <!-- Caso in cui è un toggle -->
+                            <template v-else-if="field?.type === 'toggle'">
+                                <ToggleButton 
+                                    v-model="field.model" 
+                                    v-bind="field.bind || {}"
+                                    class="w-full"
+                                    :inputProps="{ autocomplete: true }"
+                                />
+                            </template>
 
-                        <!-- Caso in cui è un textarea -->
-                        <template v-else-if="field?.type === 'textarea'">
-                            <Textarea 
-                                v-model="field.model"
-                                v-bind="field.bind || {}"
-                                :placeholder="$t(`${tKey}.${field?.placeholder}`)"
-                                class="w-full"
-                                :inputProps="{ autocomplete: true }"
-                            />
-                        </template>
+                            <!-- Caso in cui è un textarea -->
+                            <template v-else-if="field?.type === 'textarea'">
+                                <Textarea 
+                                    v-model="field.model"
+                                    v-bind="field.bind || {}"
+                                    :placeholder="$t(`${tKey}.${field?.placeholder}`)"
+                                    class="w-full"
+                                    :inputProps="{ autocomplete: true }"
+                                />
+                            </template>
 
-                        <!-- Caso in cui è una password -->
-                        <template v-else-if="field?.type === 'password'">
-                            <Password 
-                                v-model="field.model" 
-                                v-bind="field.bind || {}" 
-                                :placeholder="$t(`${tKey}.${field?.placeholder}`)"
-                                :inputProps="{ autocomplete: true }"
-                                class="w-full"
-                            />
-                        </template>
+                            <!-- Caso in cui è una password -->
+                            <template v-else-if="field?.type === 'password'">
+                                <Password 
+                                    v-model="field.model" 
+                                    v-bind="field.bind || {}" 
+                                    :placeholder="$t(`${tKey}.${field?.placeholder}`)"
+                                    :inputProps="{ autocomplete: true }"
+                                    class="w-full"
+                                />
+                            </template>
 
-                        <!-- Caso di default (input txt) -->
-                        <template v-else>
-                            <InputText v-model="field.model" v-bind="field.bind || {}" :placeholder="$t(`${tKey}.${field?.placeholder}`)" class="w-full" />
-                        </template>
-                        
-                    </Field>
+                            <!-- Caso di default (input txt) -->
+                            <template v-else>
+                                <InputText v-model="field.model" v-bind="field.bind || {}" :placeholder="$t(`${tKey}.${field?.placeholder}`)" class="w-full" />
+                            </template>
+                            
+                        </Field>
 
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Sezione dei bottoni -->
-        <div class="flex justify-end gap-2 mt-8">
-            <Button
-                :aria-label="$t(btnSave?.label)"
-                :label="$t(btnSave?.label)"
-                :icon="btnSave?.icon"
-                type="submit"
-                class="w-full"
-            />
-        </div>
+            <!-- Sezione dei bottoni -->
+            <div class="flex justify-end gap-2 mt-8">
+                <Button
+                    :aria-label="$t(btnSave?.label)"
+                    :label="$t(btnSave?.label)"
+                    :icon="btnSave?.icon"
+                    type="submit"
+                    class="w-full"
+                />
+            </div>
 
-    </Form>
+        </Form>
+
+    </BlockUI>
 </template>
 
 <script setup>
@@ -160,6 +166,11 @@
             type: String,
             required: false,
             default: null
+        },
+        blocked: {
+            type: Boolean,
+            required: false,
+            default: false
         },
         btnSave: {
             type: Object,

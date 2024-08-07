@@ -36,8 +36,9 @@ import './style.css';
 import '@fontsource-variable/inter';
 import "@fontsource-variable/material-symbols-outlined";
 
-// import dei servizi di primeVue e locali per la gestione del toast
+// import dei servizi di primeVue e locali per la gestione del toast e del confirmation
 import ToastService from 'primevue/toastservice';
+import ConfirmationService from 'primevue/confirmationservice';
 import ToastBus from '@/services/globalToastBus';
 
 // import dei servizi di primeVue e locali per la gestione del dialog
@@ -97,6 +98,7 @@ app.component('DataTableWrapper', DataTableWrapper);
 // Use primevue Services
 app.use(ToastService);
 app.use(DialogService);
+app.use(ConfirmationService);
 app.directive('tooltip', Tooltip);
 
 // Setto globalmente la variabile della CDN

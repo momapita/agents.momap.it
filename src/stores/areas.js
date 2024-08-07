@@ -65,7 +65,7 @@ export const useAreasStore = defineStore('areas', {
         // Recupero tutti i comuni
         allMunicipalities: (state) => {
             const municipalities = state.areas?.flatMap(item => Object.values(item.regions)).flatMap(item => Object.values(item.provinces)).flatMap(item => Object.values(item.municipalities));
-            return municipalities.map(({ id, name }) => ({ id, label: name }));
+            return municipalities.map(({ municipality_id, municipality_name }) => ({ id: municipality_id, label: municipality_name }));
         },
 
         // Recupero le regioni della specifica area geografica

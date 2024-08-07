@@ -94,14 +94,14 @@ class TableHelper {
                 components: defineAsyncComponent(() => import("@/components/reusable/Empity.vue")),
                 formatter: {
                     multiple: false,
-                    format: (val) => {
+                    format: (val = null) => {
 
                         // recupero le informazioni della formattazione
                         const {format = "longNoWeekday", applyTimezone = true } = formatterObj || {};
 
                         // verifico se la data è valida
-                        if(!DateServices.checkDate(val)){
-                            return t("general.dataNotFound");
+                        if(!DateServices.checkDate(val) || !val){
+                            return '';
                         }
 
                         const formattedDate = DateServices.formatDate(val, 'YYYY-MM-DD HH:mm:ss', applyTimezone);
