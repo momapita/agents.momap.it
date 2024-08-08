@@ -36,7 +36,8 @@ export default defineConfig({
   },
   build: {
     chunkSizeWarningLimit: 2000,
-    target: 'esnext'
+    target: 'esnext',
+    sourcemap: true,
   },
   transpileDependencies: true,
   lintonsave: false,

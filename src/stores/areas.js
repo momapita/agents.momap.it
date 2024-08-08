@@ -17,7 +17,7 @@ export const useAreasStore = defineStore('areas', {
 
             await executeWithGlobalErrorHandling(async () => {
                 
-                if (!Middleware.hasPermission('admin')) {
+                if (!Middleware.hasPermission('master_agent')) {
                     throw new Error('Permission Denied');
                 }
 

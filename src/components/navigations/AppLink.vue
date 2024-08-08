@@ -1,5 +1,5 @@
 <template>
-    <section v-if="isExternal || routeExists">
+    <section v-if="isExternal || routeExists" v-can="requireRole">
 
         <!-- Caso in cui è un link Esterno -->
         <a 
@@ -67,6 +67,16 @@
             return route.name !== undefined;
         } catch (error) {
             return false;
+        }
+    });
+
+    // Computed per recuperare il requireRole della rotta
+    const requireRole = computed(() => {
+        try {
+            const route = router.resolve(routerLinkTo.value) || null;
+            return route != null && route.name !== undefined ? (route?.meta && route?.meta?.requiredRole ? route.meta.requiredRole : null) : null;
+        } catch (error) {
+            return null;
         }
     });
 
