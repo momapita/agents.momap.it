@@ -38,6 +38,7 @@
     const contextMenuSelection = ref({
         show: true,
         frozen: false,
+        requireRole: 'admin',
         obj: [
             {
                 type: 'edit',

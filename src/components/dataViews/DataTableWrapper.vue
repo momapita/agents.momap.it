@@ -682,7 +682,7 @@
             const globalFilter = localFilters?.global && localFilters?.global?.value != null ? localFilters.global.value?.trim() : null;
 
             // formatto i filtri per avere un array di oggetti con field e value
-            const filtersFormatted = Object.keys(localFilters).map(key => {
+            const filtersArray = Object.keys(localFilters).map(key => {
 
                 // recupero il valore del filtro
                 const filterValue = localFilters[key].value != null ? localFilters[key].value : null;
@@ -690,17 +690,27 @@
                 // controllo se il filtro è un array e se ha due elementi e nel primo elemento è presente un oggetto dayjs
                 const value = Array.isArray(filterValue) && filterValue.length === 2 && dayjs(filterValue[0]).isValid() ? 
                 [
-                    dayjs(filterValue[0]).format('YYYY-MM-DD'),
-                    dayjs(filterValue[1]).format('YYYY-MM-DD')
+                    dayjs(filterValue[0]).hour(0).minute(0).second(0).format('YYYY-MM-DD HH:mm:ss'),
+                    dayjs(filterValue[1]).hour(23).minute(59).second(59).format('YYYY-MM-DD HH:mm:ss')
                 ] : filterValue !== null ? filterValue : null;
 
                 // ritorno l'oggetto
                 return {
-                field: key,
-                value: value,
-                matchMode: localFilters[key].matchMode || FilterMatchMode.CONTAINS
+                    field: key,
+                    value: value,
+                    matchMode: localFilters[key].matchMode || FilterMatchMode.CONTAINS
                 };
+
             }).filter(item => item.value !== null && item.value !== '' && item.field !== 'global');
+
+            // formatto i filtri per avere un oggetto
+            const filtersFormatted = filtersArray.reduce((acc, item) => {
+                acc[item.field] = {
+                    value: item.value,
+                    matchMode: item.matchMode
+                };
+                return acc;
+            }, {});
 
             // setto i parametri per la paginazione
             lazyParams.value = {

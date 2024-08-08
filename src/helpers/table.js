@@ -108,6 +108,19 @@ class TableHelper {
                         return d(formattedDate, format);
                     },
                 },
+                filterModel: {
+                    components: defineAsyncComponent(() => import("primevue/datepicker")),
+                    matchMode: this.getMatchMode("BETWEEN"),
+                    bind: {
+                      dateFormat: "dd/mm/yy",
+                      numberOfMonths: 1,
+                      selectionMode: "range",
+                      manualInput: false,
+                      monthNavigator: true,
+                      hideOnRangeSelection: true,
+                      showButtonBar: true,
+                    },
+                },
             }
         })
     }
